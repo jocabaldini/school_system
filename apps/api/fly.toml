@@ -1,4 +1,4 @@
-app = "seu-projeto-api"
+app = "school-system-api"
 primary_region = "gru"
 
 [build]
