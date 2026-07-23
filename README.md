@@ -1,8 +1,12 @@
-# nest-next-template
+# school_system
 
-A full-stack boilerplate built with **NestJS**, **Next.js**, **Prisma** and **PostgreSQL** — designed to be cloned as the starting point for new projects.
+Management system for an infant school, built on top of the
+[`nest_next_template`](https://github.com/jocabaldini/nest_next_template) boilerplate.
 
-Production deployment targets: **Supabase** (database) · **Fly.io** (API) · **Vercel** (web)
+- **API**: https://school-system-api.fly.dev
+- **Web**: https://project-bc2go.vercel.app
+
+Production deployment: **Supabase** (database, São Paulo) · **Fly.io** (API) · **Vercel** (web)
 
 ---
 
@@ -10,6 +14,7 @@ Production deployment targets: **Supabase** (database) · **Fly.io** (API) · **
 
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
+- [Roles](#roles)
 - [Architecture Decisions](#architecture-decisions)
 - [Local Setup](#local-setup)
 - [Environment Variables](#environment-variables)
@@ -19,8 +24,8 @@ Production deployment targets: **Supabase** (database) · **Fly.io** (API) · **
 - [API Reference](#api-reference)
 - [Code Patterns](#code-patterns)
 - [CI/CD](#cicd)
-- [Deploy Guide](#deploy-guide)
-- [Using as a Boilerplate](#using-as-a-boilerplate)
+- [Production Environment](#production-environment)
+- [Roadmap](#roadmap)
 
 ---
 
@@ -44,7 +49,7 @@ Production deployment targets: **Supabase** (database) · **Fly.io** (API) · **
 ## Project Structure
 
 ```
-nest_next_template/
+school_system/
 ├── apps/
 │   ├── api/                        # NestJS backend
 │   │   ├── prisma/
@@ -70,7 +75,6 @@ nest_next_template/
 │   │   │   ├── setup.ts            # Global test setup (migrate + seed)
 │   │   │   └── jest-e2e.json
 │   │   ├── Dockerfile
-│   │   ├── fly.toml
 │   │   └── .env.example
 │   └── web/                        # Next.js frontend
 │       ├── app/
@@ -90,9 +94,23 @@ nest_next_template/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml                  # Lint + e2e + deploy pipeline
+├── fly.toml                         # Fly.io app config (monorepo root)
 ├── docker-compose.yml
 └── package.json                    # npm workspaces root
 ```
+
+---
+
+## Roles
+
+| Role | Description |
+|---|---|
+| `ADMIN` | Full access — school director, manages everything |
+| `USER` | Reserved for future use |
+
+> The role is named `ADMIN` (not `DIRECTOR`) — renaming was evaluated and discarded due to
+> migration complexity with Supabase pgbouncer. `ADMIN` is understood as "the director who
+> administers the system".
 
 ---
 
@@ -116,7 +134,7 @@ The transport pattern (Strategy) decouples log destinations from log formatting:
 LoggerService → [ConsoleTransport, DatadogTransport, LokiTransport, ...]
 ```
 
-Adding a new destination requires only implementing `ILogTransport` and registering it in `LoggerModule` — no changes to `LoggerService` itself.
+Adding a new destination requires only implementing `ILogTransport` and registering it in `LoggerModule` — no changes to `LoggerService` itself. Only 5xx errors are logged by `HttpExceptionFilter`.
 
 ### Request Context Propagation via AsyncLocalStorage
 
@@ -165,6 +183,10 @@ This keeps all auth logic in one place, away from individual page components.
 
 All requests from the web to the API go through `app/api/[...path]/route.ts`. This avoids exposing the API URL to the browser and allows the API to enforce `CORS_ORIGIN` to a single trusted origin (the Next.js server).
 
+### Database Migrations with Supabase pgbouncer
+
+`ALTER TYPE ... RENAME VALUE` fails against Supabase's pgbouncer connection. Enum value changes use the sequence: `DROP DEFAULT` → change column to `text` → `DROP TYPE` → `CREATE TYPE` → cast column `USING` → `SET DEFAULT`.
+
 ---
 
 ## Local Setup
@@ -179,8 +201,8 @@ All requests from the web to the API go through `app/api/[...path]/route.ts`. Th
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/jocabaldini/nest_next_template
-cd nest-next-template
+git clone https://github.com/jocabaldini/school_system
+cd school_system
 
 # 2. Install dependencies
 npm install
@@ -196,7 +218,7 @@ docker compose up -d
 npm run db:migrate
 
 # 6. Seed the admin user
-ADMIN_EMAIL=admin@admin.com ADMIN_PASSWORD=Admin@123 ADMIN_NAME=Admin \
+ADMIN_EMAIL=director@example.com ADMIN_PASSWORD=Director@123 ADMIN_NAME=Director \
   npm run db:seed
 
 # 7. Start both apps
@@ -266,14 +288,14 @@ npm run db:reset
 
 ### Seeding
 
-There is no public registration endpoint. The first admin user is created via seed:
+There is no public registration endpoint. The first admin (school director) is created via seed:
 
 ```bash
-ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD=YourPassword@123 ADMIN_NAME="Your Name" \
+ADMIN_EMAIL=director@example.com ADMIN_PASSWORD=YourPassword@123 ADMIN_NAME="Director Name" \
   npm run db:seed
 ```
 
-Subsequent admins can be created by an existing admin via `POST /users` with `"role": "ADMIN"`.
+Re-running the seed with the same `ADMIN_EMAIL` updates the existing admin's name and password rather than creating a duplicate. Subsequent admins can be created by an existing admin via `POST /users` with `"role": "ADMIN"`.
 
 ---
 
@@ -305,6 +327,8 @@ Requires Docker Compose running (uses `postgres-test` on port 5433 and Redis):
 docker compose up -d
 npm run -w apps/api test:e2e
 ```
+
+Currently: **37/37 passing**.
 
 The global setup (`test/setup.ts`) runs migrations and seeds two test users automatically:
 
@@ -351,6 +375,8 @@ A [Bruno](https://www.usebruno.com/) collection is included in `bruno/`. Bruno i
 |---|---|---|---|
 | `GET` | `/health` | — | Returns `{ status: "ok" }` |
 
+> Domain endpoints (guardians, students, classes, tuition) are not implemented yet — see [Roadmap](#roadmap).
+
 ---
 
 ## Code Patterns
@@ -383,9 +409,9 @@ providers: [
 
 ```bash
 # Generate with NestJS CLI
-npx nest g module features/products
-npx nest g controller features/products
-npx nest g service features/products
+npx nest g module features/guardians
+npx nest g controller features/guardians
+npx nest g service features/guardians
 ```
 
 Apply `@Roles(Role.ADMIN)` on routes that require admin access, and inject `LoggerService` (available globally — no import needed) for structured logging.
@@ -395,15 +421,17 @@ Apply `@Roles(Role.ADMIN)` on routes that require admin access, and inject `Logg
 This project uses [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-feat(auth): add google oauth provider
+feat(students): add student CRUD with guardian link
 fix(users): handle duplicate email on update
 chore: update dependencies
 test(auth): add e2e tests for token rotation
 ci: add deploy workflow for fly.io
-docs: update README with deploy guide
+docs: update README with production environment details
 ```
 
 Valid types: `feat`, `fix`, `chore`, `docs`, `test`, `refactor`, `style`, `ci`, `perf`
+
+All commit messages and code comments are written in English.
 
 ---
 
@@ -415,112 +443,53 @@ GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and pull
 push → main
   ├── Lint (API + Web + format check)
   ├── E2E Tests (PostgreSQL + Redis via GitHub Actions services)
-  └── Deploy API to Fly.io (only if ENABLE_DEPLOY = true)
+  └── Deploy API to Fly.io (flyctl deploy --local-only)
 ```
 
-The `deploy-api` job is gated by the repository variable `ENABLE_DEPLOY`. This boilerplate has it unset — derived projects set it to `true` to activate deploy on push.
-
-The web (Vercel) deploys automatically via GitHub integration — no workflow needed.
+Deploy is active for this project (`ENABLE_DEPLOY = true`). The web (Vercel) deploys automatically via GitHub integration — no workflow needed.
 
 ---
 
-## Deploy Guide
+## Production Environment
 
-This section documents how to configure production deployment for projects derived from this boilerplate.
+| Component | Details |
+|---|---|
+| Database | Supabase, São Paulo region — `DATABASE_URL` (pooled, port 6543) + `DIRECT_URL` (direct, port 5432) |
+| API | Fly.io, region `gru` — deployed via `flyctl deploy --local-only` |
+| Cache | Redis / Upstash — shared with the `laundromat_system` project |
+| Web | Vercel, project `project-bc2go` |
+| CI/CD | GitHub Actions — `FLY_API_TOKEN` secret + `ENABLE_DEPLOY=true` variable |
 
-### 1. Supabase (Database)
+Migrations run automatically on every deploy via `release_command` in `fly.toml`.
 
-1. Create a project at [supabase.com](https://supabase.com) — select **South America (São Paulo)** region
-2. Go to **Project Settings → Database → Connection string**
-3. Copy two connection strings:
-   - **Transaction mode** (port 6543, pgbouncer) → `DATABASE_URL`
-   - **Session mode** (port 5432, direct) → `DIRECT_URL`
-
-### 2. Fly.io (API)
-
-```bash
-# Install flyctl
-curl -L https://fly.io/install.sh | sh
-
-# Login
-flyctl auth login
-
-# From the repo root, create the app
-flyctl apps create your-app-name --region gru
-
-# Update fly.toml
-# Change: app = "your-app-name"
-
-# Set all runtime secrets (never stored in the repo)
-flyctl secrets set \
-  DATABASE_URL="postgresql://...supabase pooled (port 6543)..." \
-  DIRECT_URL="postgresql://...supabase direct (port 5432)..." \
-  JWT_SECRET="your-secret-min-32-chars" \
-  JWT_REFRESH_SECRET="your-refresh-secret-min-32-chars" \
-  REDIS_URL="rediss://...upstash..." \
-  CORS_ORIGIN="https://your-app.vercel.app"
-
-# Add deploy token to GitHub
-flyctl auth token
-# → Add as GitHub secret: FLY_API_TOKEN
-```
-
-> Migrations run automatically on every deploy via `release_command` in `fly.toml`.
-
-### 3. Redis (Upstash)
-
-1. Create a free database at [upstash.com](https://upstash.com) — select **São Paulo** region
-2. Copy the **REST URL** with TLS (`rediss://...`) → add to Fly.io secrets as `REDIS_URL`
-
-### 4. Vercel (Web)
-
-1. Import the repository at [vercel.com](https://vercel.com)
-2. Set **Root Directory** to `apps/web`
-3. Add environment variables:
-   - `API_URL` → your Fly.io app URL (e.g. `https://your-app-name.fly.dev`)
-   - `ACCESS_TOKEN_MAX_AGE` → `86400`
-
-### 5. Activate CI/CD
-
-In the GitHub repository, go to **Settings → Secrets and variables → Actions**:
-
-- **Secrets**: add `FLY_API_TOKEN`
-- **Variables**: add `ENABLE_DEPLOY` = `true`
-
-### 6. Seed the First Admin
-
-After the first successful deploy:
+To seed the first admin in production:
 
 ```bash
 flyctl ssh console -C \
-  "ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD=YourPassword@123 ADMIN_NAME='Your Name' node -e \"require('./dist/prisma/seed')\""
+  "ADMIN_EMAIL=director@example.com ADMIN_PASSWORD=YourPassword@123 ADMIN_NAME='Director Name' node -e \"require('./dist/prisma/seed')\""
 ```
 
 ---
 
-## Using as a Boilerplate
+## Roadmap
 
-```bash
-# Clone (without git history)
-git clone --depth=1 https://github.com/jocabaldini/nest_next_template my-new-project
-cd my-new-project
+**Phase 1 — MVP**
 
-# Reset git history
-rm -rf .git
-git init
-git add .
-git commit -m "chore: init from nest-next-template"
+1. Infrastructure and boilerplate adaptation *(in progress)*
+2. Visual identity
+3. Guardian module (Responsável) — CPF-validated guardians linked to students
+4. Student module (Aluno) — profile, status, authorized pickup list
+5. Class and Schedule module (Turma) — enrollment, hours, capacity
+6. Tuition module (Mensalidade) — auto-generated from hours × rate × discount, payment tracking
 
-# Push to your new repository
-git remote add origin https://github.com/your-username/my-new-project.git
-git push -u origin main
-```
+**Phase 2 — Future**
 
-After cloning, update the following before starting development:
+- Teacher CRUD and class assignment
+- Dashboard (delinquency rate, occupancy, monthly revenue)
+- Overdue tuition notifications
+- Exportable reports (PDF/Excel)
+- Teacher portal (student notes for annual reports)
+- Parent portal (child info, payment history)
+- Attendance tracking
 
-- `package.json` (root) — change `name`, `description`, `author`
-- `apps/api/package.json` — change `name`
-- `apps/web/package.json` — change `name`
-- `apps/api/fly.toml` — change `app` to your Fly.io app name
-- Both `.env.example` files → copy to `.env` and fill in values
-- GitHub repository variables: set `ENABLE_DEPLOY = true` when ready to deploy
+> See `CLAUDE.md` for the detailed, up-to-date backlog and open questions.
