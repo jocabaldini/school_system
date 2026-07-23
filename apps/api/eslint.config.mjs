@@ -59,6 +59,17 @@ export default tseslint.config(
     },
   },
   {
+    // Prisma scripts (seed, etc.) run outside Nest's DI/decorator context and
+    // are excluded from the production build (tsconfig.build.json) — safe to relax.
+    files: ['prisma/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+    },
+  },
+  {
     // Test files: INestApplication.getHttpServer() returns `any` — safe to ignore
     // in tests since supertest handles the type internally.
     files: ['test/**/*.ts'],
