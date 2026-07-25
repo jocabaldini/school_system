@@ -16,19 +16,19 @@ export default function Sidebar({ dict }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex h-screen w-56 shrink-0 flex-col bg-surface-sidebar px-3 py-4">
-      <div className="mb-6 flex items-center px-2">
+    <nav className="flex h-screen w-56 shrink-0 flex-col bg-surface-sidebar">
+      <div className="flex h-14 items-center justify-center">
         <Image
           src="/logo.png"
           alt="Recanto da Criança"
           width={900}
-          height={329}
-          className="h-8 w-auto"
+          height={287}
+          className="h-10 w-auto"
           priority
         />
       </div>
 
-      <ul className="flex flex-col gap-1">
+      <ul className="flex flex-col gap-1 px-3 py-4">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           return (
