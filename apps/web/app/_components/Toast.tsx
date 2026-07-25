@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 export type ToastVariant = 'success' | 'error' | 'info';
 
 const styles: Record<ToastVariant, { wrap: string; dot: string }> = {
-  success: { wrap: 'bg-slate-900 text-white', dot: 'bg-emerald-400' },
-  error: { wrap: 'bg-slate-900 text-white', dot: 'bg-rose-400' },
-  info: { wrap: 'bg-slate-900 text-white', dot: 'bg-sky-400' },
+  success: { wrap: 'bg-badge-success-bg text-badge-success-ink', dot: 'bg-badge-success-ink' },
+  error: { wrap: 'bg-badge-danger-bg text-badge-danger-ink', dot: 'bg-badge-danger-ink' },
+  info: { wrap: 'bg-surface-card border border-line text-ink', dot: 'bg-ink-faint' },
 };
 
 export function Toast({
@@ -37,7 +37,7 @@ export function Toast({
     <div className="fixed bottom-5 right-5 z-50">
       <div
         className={[
-          'flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg ring-1 ring-black/10',
+          'flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg',
           'animate-in fade-in slide-in-from-bottom-2 duration-200',
           s.wrap,
         ].join(' ')}
@@ -49,7 +49,7 @@ export function Toast({
 
         <button
           onClick={onClose}
-          className="ml-2 rounded-md px-2 py-1 text-xs text-white/80 hover:bg-white/10 hover:text-white"
+          className="ml-2 rounded-md px-2 py-1 text-xs opacity-70 hover:opacity-100 hover:bg-current/10 transition"
           aria-label="Fechar notificação"
           type="button"
         >

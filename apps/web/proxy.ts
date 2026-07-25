@@ -119,5 +119,11 @@ function setLocaleCookie(req: NextRequest, response: NextResponse) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api/).*)'],
+  // Public static assets (public/ folder) are excluded too: next/image's optimizer
+  // self-fetches local images over HTTP, and that internal request carries no auth
+  // cookie, so without this exclusion the middleware would redirect it to /login
+  // and the optimizer would receive HTML instead of image bytes.
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico)$).*)',
+  ],
 };

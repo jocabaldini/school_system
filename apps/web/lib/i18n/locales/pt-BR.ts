@@ -14,8 +14,10 @@ export const ptBR = {
     title: 'Template NestJS e Next.js',
   },
   navbar: {
-    appName: 'Meu App',
     logout: 'Sair',
     loggingOut: 'Saindo...',
+  },
+  sidebar: {
+    dashboard: 'Painel',
   },
 } as const;

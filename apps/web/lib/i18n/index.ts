@@ -20,9 +20,11 @@ export type Dictionary = {
     readonly title: string;
   };
   readonly navbar: {
-    readonly appName: string;
     readonly logout: string;
     readonly loggingOut: string;
+  };
+  readonly sidebar: {
+    readonly dashboard: string;
   };
 };
 

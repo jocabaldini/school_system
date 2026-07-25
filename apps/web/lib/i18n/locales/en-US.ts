@@ -14,8 +14,10 @@ export const enUS = {
     title: 'NestJS and Next.js Template',
   },
   navbar: {
-    appName: 'My App',
     logout: 'Sign out',
     loggingOut: 'Signing out...',
+  },
+  sidebar: {
+    dashboard: 'Dashboard',
   },
 } as const;

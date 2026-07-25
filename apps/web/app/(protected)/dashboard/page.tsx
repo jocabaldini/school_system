@@ -12,7 +12,12 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <Navbar userName={user?.name ?? ''} dict={dict.navbar} currentLocale={locale} />
+      <Navbar
+        userName={user?.name ?? ''}
+        dict={dict.navbar}
+        currentLocale={locale}
+        title={dict.sidebar.dashboard}
+      />
       <DashboardClient dict={dict.dashboard} />
     </>
   );

@@ -42,15 +42,15 @@ export default function LoginClient({ dict }: Props) {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 flex items-center justify-center">
+    <main className="min-h-screen bg-surface-page flex items-center justify-center">
       <div className="w-full max-w-sm">
-        <div className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h1 className="text-2xl font-semibold text-slate-800">{dict.title}</h1>
-          <p className="mt-1 text-sm text-slate-500">{dict.subtitle}</p>
+        <div className="rounded-xl border border-line bg-surface-card p-8 shadow-sm">
+          <h1 className="text-2xl font-semibold text-ink">{dict.title}</h1>
+          <p className="mt-1 text-sm text-ink-muted">{dict.subtitle}</p>
 
           <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <label htmlFor="email" className="text-sm font-medium text-slate-700">
+              <label htmlFor="email" className="text-sm font-medium text-ink-muted">
                 {dict.email}
               </label>
               <input
@@ -60,13 +60,13 @@ export default function LoginClient({ dict }: Props) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="text-gray-900 placeholder:text-gray-400 bg-white rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition"
+                className="text-ink placeholder:text-ink-faint bg-surface-card rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition"
                 placeholder={dict.emailPlaceholder}
               />
             </div>
 
             <div className="flex flex-col gap-1">
-              <label htmlFor="password" className="text-sm font-medium text-slate-700">
+              <label htmlFor="password" className="text-sm font-medium text-ink-muted">
                 {dict.password}
               </label>
               <input
@@ -76,7 +76,7 @@ export default function LoginClient({ dict }: Props) {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="text-gray-900 placeholder:text-gray-400 bg-white rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition"
+                className="text-ink placeholder:text-ink-faint bg-surface-card rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition"
                 placeholder={dict.passwordPlaceholder}
               />
             </div>
@@ -84,7 +84,7 @@ export default function LoginClient({ dict }: Props) {
             <button
               type="submit"
               disabled={isPending}
-              className="mt-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50 transition"
+              className="mt-2 rounded-lg bg-btn-primary-bg text-btn-primary-ink px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 transition"
             >
               {isPending ? dict.submitting : dict.submit}
             </button>
