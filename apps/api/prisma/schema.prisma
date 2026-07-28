@@ -23,3 +23,41 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
+
+model Responsavel {
+  id        String   @id @default(cuid())
+  nome      String
+  cpf       String   @unique
+  telefone  String?
+  email     String?
+  alunos    Aluno[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum StatusAluno {
+  ATIVO
+  INATIVO
+}
+
+model Aluno {
+  id               String            @id @default(cuid())
+  nome             String
+  dataNascimento   DateTime
+  fotoUrl          String?
+  status           StatusAluno       @default(ATIVO)
+  responsavelId    String
+  responsavel      Responsavel       @relation(fields: [responsavelId], references: [id])
+  autorizadosBusca AutorizadoBusca[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model AutorizadoBusca {
+  id         String  @id @default(cuid())
+  nome       String
+  parentesco String
+  telefone   String?
+  alunoId    String
+  aluno      Aluno   @relation(fields: [alunoId], references: [id], onDelete: Cascade)
+}

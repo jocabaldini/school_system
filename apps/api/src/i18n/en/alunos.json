@@ -1,0 +1,6 @@
+{
+  "not_found": "Student not found",
+  "responsavel_not_found": "Responsible party not found",
+  "responsavel_xor": "Provide either responsavelId or responsavel, not both",
+  "autorizado_not_found": "Authorized pickup person not found"
+}

@@ -1,0 +1,6 @@
+{
+  "not_found": "Aluno não encontrado",
+  "responsavel_not_found": "Responsável não encontrado",
+  "responsavel_xor": "Informe responsavelId ou responsavel, não ambos",
+  "autorizado_not_found": "Pessoa autorizada para busca não encontrada"
+}
