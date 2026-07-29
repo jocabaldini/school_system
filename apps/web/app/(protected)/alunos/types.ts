@@ -73,5 +73,4 @@ export interface UpdateResponsavelPayload {
 }
 
 export type UpdateResponsavelResult =
-  | { ok: true; data: Responsavel }
-  | { ok: false; status: number; message: string };
+  { ok: true; data: Responsavel } | { ok: false; status: number; message: string };

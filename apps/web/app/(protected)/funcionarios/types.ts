@@ -40,5 +40,4 @@ export interface UpdateFuncionarioPayload {
 // alunos/actions.ts's updateResponsavel for the same pattern), and the form needs the status to
 // show a cpf conflict inline rather than as a generic toast.
 export type FuncionarioResult =
-  | { ok: true; data: Funcionario }
-  | { ok: false; status: number; message: string };
+  { ok: true; data: Funcionario } | { ok: false; status: number; message: string };
