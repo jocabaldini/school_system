@@ -10,7 +10,10 @@ interface SidebarProps {
 }
 
 // Add each menu item alongside its module (Items 3-6 of the backlog) to avoid broken links.
-const NAV_ITEMS = [{ href: '/dashboard', label: 'dashboard' as const }];
+const NAV_ITEMS = [
+  { href: '/dashboard', label: 'dashboard' as const },
+  { href: '/alunos', label: 'alunos' as const },
+];
 
 export default function Sidebar({ dict }: SidebarProps) {
   const pathname = usePathname();
@@ -30,7 +33,7 @@ export default function Sidebar({ dict }: SidebarProps) {
 
       <ul className="flex flex-col gap-1 px-3 py-4">
         {NAV_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <li key={item.href}>
               <Link

@@ -111,4 +111,86 @@ describe('Responsaveis (e2e)', () => {
       await request(app.getHttpServer()).get(`/responsaveis/${responsavelId}`).expect(401);
     });
   });
+
+  describe('PATCH /responsaveis/:id', () => {
+    it('ADMIN — updates nome/telefone/email', async () => {
+      const res = await request(app.getHttpServer())
+        .patch(`/responsaveis/${responsavelId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ nome: 'Responsavel Atualizado', telefone: '11988887777', email: 'novo@test.com' })
+        .expect(200);
+
+      expect(res.body).toMatchObject({
+        id: responsavelId,
+        nome: 'Responsavel Atualizado',
+        telefone: '11988887777',
+        email: 'novo@test.com',
+      });
+    });
+
+    it('ADMIN — updates cpf to a new valid cpf', async () => {
+      const newCpf = nextCPF();
+
+      const res = await request(app.getHttpServer())
+        .patch(`/responsaveis/${responsavelId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ cpf: newCpf })
+        .expect(200);
+
+      expect(res.body).toMatchObject({ id: responsavelId, cpf: newCpf });
+      cpf = newCpf;
+    });
+
+    it('ADMIN — rejects cpf that already belongs to another responsavel (409)', async () => {
+      const otherCpf = nextCPF();
+      const created = await request(app.getHttpServer())
+        .post('/alunos')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          nome: 'Outro Aluno',
+          dataNascimento: '2020-01-01',
+          responsavel: { nome: 'Outro Responsavel', cpf: otherCpf },
+        })
+        .expect(201);
+
+      const otherResponsavelId: string = created.body.responsavelId;
+
+      await request(app.getHttpServer())
+        .patch(`/responsaveis/${otherResponsavelId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ cpf })
+        .expect(409);
+    });
+
+    it('ADMIN — rejects invalid cpf (400)', async () => {
+      await request(app.getHttpServer())
+        .patch(`/responsaveis/${responsavelId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ cpf: '12345678900' })
+        .expect(400);
+    });
+
+    it('ADMIN — returns 404 for non-existent responsavel', async () => {
+      await request(app.getHttpServer())
+        .patch('/responsaveis/nonexistentid123')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ nome: 'X' })
+        .expect(404);
+    });
+
+    it('USER — cannot update (403)', async () => {
+      await request(app.getHttpServer())
+        .patch(`/responsaveis/${responsavelId}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({ nome: 'X' })
+        .expect(403);
+    });
+
+    it('unauthenticated — returns 401', async () => {
+      await request(app.getHttpServer())
+        .patch(`/responsaveis/${responsavelId}`)
+        .send({ nome: 'X' })
+        .expect(401);
+    });
+  });
 });

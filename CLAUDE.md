@@ -18,6 +18,7 @@ Built on top of `nest_next_template` boilerplate.
 - One item at a time — do not move to the next item without explicit confirmation.
 - After each item: commit, push, deploy to production, then wait for review before starting the next.
 - All code comments and commit messages must be in **English**.
+- Whenever the app is run for testing or verification (dev servers, Playwright, or any background process), kill every process that was started before finishing the task. Never leave servers running in the background for the developer to discover and kill later.
 - Conventional Commits enforced via Husky: `feat`, `fix`, `chore`, `docs`, `test`, `refactor`, `style`, `ci`, `perf`.
 
 ## Tech stack

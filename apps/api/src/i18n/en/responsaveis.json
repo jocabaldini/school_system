@@ -1,3 +1,4 @@
 {
-  "not_found": "Responsible party not found"
+  "not_found": "Responsible party not found",
+  "cpf_in_use": "CPF already belongs to another responsible party"
 }

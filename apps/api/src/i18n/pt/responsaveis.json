@@ -1,3 +1,4 @@
 {
-  "not_found": "Responsável não encontrado"
+  "not_found": "Responsável não encontrado",
+  "cpf_in_use": "CPF já pertence a outro responsável"
 }

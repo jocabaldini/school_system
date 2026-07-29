@@ -15,4 +15,25 @@ export const NEST_ROUTES = {
     update: (id: string) => `/users/${id}`,
     remove: (id: string) => `/users/${id}`,
   },
+
+  alunos: {
+    list: '/alunos',
+    create: '/alunos',
+    findOne: (id: string) => `/alunos/${id}`,
+    update: (id: string) => `/alunos/${id}`,
+    remove: (id: string) => `/alunos/${id}`,
+    autorizados: {
+      list: (alunoId: string) => `/alunos/${alunoId}/autorizados-busca`,
+      create: (alunoId: string) => `/alunos/${alunoId}/autorizados-busca`,
+      update: (alunoId: string, autorizadoId: string) =>
+        `/alunos/${alunoId}/autorizados-busca/${autorizadoId}`,
+      remove: (alunoId: string, autorizadoId: string) =>
+        `/alunos/${alunoId}/autorizados-busca/${autorizadoId}`,
+    },
+  },
+
+  responsaveis: {
+    search: '/responsaveis',
+    update: (id: string) => `/responsaveis/${id}`,
+  },
 } as const;
