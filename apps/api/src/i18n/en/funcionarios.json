@@ -1,0 +1,4 @@
+{
+  "not_found": "Employee not found",
+  "cpf_in_use": "CPF already belongs to another employee"
+}

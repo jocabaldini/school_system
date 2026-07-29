@@ -13,6 +13,7 @@ interface SidebarProps {
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'dashboard' as const },
   { href: '/alunos', label: 'alunos' as const },
+  { href: '/funcionarios', label: 'funcionarios' as const },
 ];
 
 export default function Sidebar({ dict }: SidebarProps) {

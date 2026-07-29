@@ -11,7 +11,7 @@ import type {
   AutorizadoPayload,
   CreateAlunoPayload,
   Responsavel,
-  StatusAluno,
+  StatusFilter,
   UpdateAlunoPayload,
   UpdateResponsavelPayload,
   UpdateResponsavelResult,
@@ -43,7 +43,7 @@ async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
 export async function listAlunos(params: {
   page?: number;
   limit?: number;
-  status?: StatusAluno;
+  status?: StatusFilter;
 }): Promise<AlunoListResult> {
   const query = new URLSearchParams();
   if (params.page) query.set('page', String(params.page));
@@ -70,6 +70,14 @@ export async function updateAluno(id: string, payload: UpdateAlunoPayload): Prom
     method: 'PATCH',
     body: JSON.stringify(payload),
   });
+}
+
+export async function deactivateAluno(id: string): Promise<Aluno> {
+  return apiRequest<Aluno>(NEST_ROUTES.alunos.remove(id), { method: 'DELETE' });
+}
+
+export async function activateAluno(id: string): Promise<Aluno> {
+  return apiRequest<Aluno>(NEST_ROUTES.alunos.reactivate(id), { method: 'PATCH' });
 }
 
 export async function searchResponsaveis(q: string): Promise<Responsavel[]> {

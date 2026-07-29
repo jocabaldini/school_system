@@ -1,0 +1,4 @@
+{
+  "not_found": "Funcionário não encontrado",
+  "cpf_in_use": "CPF já pertence a outro funcionário"
+}

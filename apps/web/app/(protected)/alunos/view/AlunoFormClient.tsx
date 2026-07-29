@@ -9,15 +9,17 @@ import { formatCPF, isValidCPF } from '@/lib/cpf';
 import { formatTelefone, isValidTelefone } from '@/lib/phone';
 import { isValidEmail } from '@/lib/email';
 import {
+  activateAluno,
   createAluno,
   createAutorizado,
+  deactivateAluno,
   removeAutorizado,
   searchResponsaveis,
   updateAluno,
   updateAutorizado,
   updateResponsavel,
 } from '../actions';
-import type { Aluno, AutorizadoBusca, Responsavel, StatusAluno } from '../types';
+import type { Aluno, AutorizadoBusca, Responsavel, StatusFilter } from '../types';
 
 type Tab = 'dados' | 'responsavel' | 'autorizados';
 type ResponsavelMode = 'existing' | 'new';
@@ -43,7 +45,8 @@ export default function AlunoFormClient({ dict, aluno }: AlunoFormClientProps) {
   const [nome, setNome] = useState(aluno?.nome ?? '');
   const [dataNascimento, setDataNascimento] = useState(aluno?.dataNascimento.slice(0, 10) ?? '');
   const [fotoUrl, setFotoUrl] = useState(aluno?.fotoUrl ?? '');
-  const [status, setStatus] = useState<StatusAluno>(aluno?.status ?? 'ATIVO');
+  const initialStatus: StatusFilter = aluno?.deletedAt ? 'INATIVO' : 'ATIVO';
+  const [status, setStatus] = useState<StatusFilter>(initialStatus);
 
   // Tab 2 — responsavel. In create mode, toggles between linking an existing one and
   // registering a new one. In edit mode there's no toggle — the linked responsavel's own
@@ -162,8 +165,15 @@ export default function AlunoFormClient({ dict, aluno }: AlunoFormClientProps) {
             nome,
             dataNascimento,
             fotoUrl: fotoUrl.trim() || undefined,
-            status,
           });
+
+          if (status !== initialStatus) {
+            if (status === 'INATIVO') {
+              await deactivateAluno(aluno.id);
+            } else {
+              await activateAluno(aluno.id);
+            }
+          }
 
           const respResult = await updateResponsavel(aluno.responsavelId, {
             nome: respNome,
@@ -381,7 +391,7 @@ export default function AlunoFormClient({ dict, aluno }: AlunoFormClientProps) {
                   <select
                     id="status"
                     value={status}
-                    onChange={(e) => setStatus(e.target.value as StatusAluno)}
+                    onChange={(e) => setStatus(e.target.value as StatusFilter)}
                     className={inputClass}
                   >
                     <option value="ATIVO">{dict.statusActive}</option>

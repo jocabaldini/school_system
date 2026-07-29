@@ -41,7 +41,7 @@ describe('Alunos (e2e)', () => {
         })
         .expect(201);
 
-      expect(res.body).toMatchObject({ nome: 'Aluno Um', status: 'ATIVO' });
+      expect(res.body).toMatchObject({ nome: 'Aluno Um', deletedAt: null });
       expect(res.body.responsavel).toMatchObject({ nome: 'Responsavel Um', cpf });
     });
 
@@ -193,7 +193,7 @@ describe('Alunos (e2e)', () => {
         .expect(200);
 
       for (const aluno of res.body.data) {
-        expect(aluno.status).toBe('ATIVO');
+        expect(aluno.deletedAt).toBeNull();
       }
     });
 
@@ -284,7 +284,7 @@ describe('Alunos (e2e)', () => {
   // ─── DELETE /alunos/:id (soft delete) ──────────────────────────────────────
 
   describe('DELETE /alunos/:id', () => {
-    it('ADMIN — soft-deletes the aluno (status -> INATIVO, row still exists)', async () => {
+    it('ADMIN — soft-deletes the aluno (deletedAt set, row still exists)', async () => {
       const created = await request(app.getHttpServer())
         .post('/alunos')
         .set('Authorization', `Bearer ${adminToken}`)
@@ -300,14 +300,15 @@ describe('Alunos (e2e)', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .expect(200);
 
-      expect(res.body).toMatchObject({ id: created.body.id, status: 'INATIVO' });
+      expect(res.body.id).toBe(created.body.id);
+      expect(res.body.deletedAt).not.toBeNull();
 
       const afterDelete = await request(app.getHttpServer())
         .get(`/alunos/${created.body.id}`)
         .set('Authorization', `Bearer ${adminToken}`)
         .expect(200);
 
-      expect(afterDelete.body.status).toBe('INATIVO');
+      expect(afterDelete.body.deletedAt).not.toBeNull();
     });
 
     it('ADMIN — returns 404 when deleting non-existent aluno', async () => {
@@ -326,6 +327,59 @@ describe('Alunos (e2e)', () => {
 
     it('unauthenticated — returns 401', async () => {
       await request(app.getHttpServer()).delete('/alunos/someid').expect(401);
+    });
+  });
+
+  // ─── PATCH /alunos/:id/reativar ────────────────────────────────────────────
+
+  describe('PATCH /alunos/:id/reativar', () => {
+    it('ADMIN — reactivates a soft-deleted aluno (deletedAt back to null)', async () => {
+      const created = await request(app.getHttpServer())
+        .post('/alunos')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          nome: 'Aluno Para Reativar',
+          dataNascimento: '2020-01-01',
+          responsavel: { nome: 'Responsavel Para Reativar', cpf: nextCPF() },
+        })
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .delete(`/alunos/${created.body.id}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+
+      const res = await request(app.getHttpServer())
+        .patch(`/alunos/${created.body.id}/reativar`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+
+      expect(res.body.deletedAt).toBeNull();
+
+      const afterReactivate = await request(app.getHttpServer())
+        .get(`/alunos/${created.body.id}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+
+      expect(afterReactivate.body.deletedAt).toBeNull();
+    });
+
+    it('ADMIN — returns 404 for non-existent aluno', async () => {
+      await request(app.getHttpServer())
+        .patch('/alunos/nonexistentid123/reativar')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(404);
+    });
+
+    it('USER — cannot reactivate (403)', async () => {
+      await request(app.getHttpServer())
+        .patch('/alunos/someid/reativar')
+        .set('Authorization', `Bearer ${userToken}`)
+        .expect(403);
+    });
+
+    it('unauthenticated — returns 401', async () => {
+      await request(app.getHttpServer()).patch('/alunos/someid/reativar').expect(401);
     });
   });
 });

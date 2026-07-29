@@ -53,7 +53,6 @@ export class AlunosService {
           nome: dto.nome,
           dataNascimento: new Date(dto.dataNascimento),
           fotoUrl: dto.fotoUrl,
-          status: dto.status,
           responsavelId,
         },
         include: { responsavel: true },
@@ -64,7 +63,12 @@ export class AlunosService {
   async findAll(query: QueryAlunoDto) {
     const page = query.page ?? 1;
     const limit = query.limit ?? 20;
-    const where = query.status ? { status: query.status } : {};
+    const where =
+      query.status === 'ATIVO'
+        ? { deletedAt: null }
+        : query.status === 'INATIVO'
+          ? { deletedAt: { not: null } }
+          : {};
 
     const [data, total] = await Promise.all([
       this.prisma.aluno.findMany({
@@ -104,7 +108,6 @@ export class AlunosService {
         nome: dto.nome,
         dataNascimento: dto.dataNascimento ? new Date(dto.dataNascimento) : undefined,
         fotoUrl: dto.fotoUrl,
-        status: dto.status,
       },
     });
   }
@@ -117,7 +120,19 @@ export class AlunosService {
 
     return this.prisma.aluno.update({
       where: { id },
-      data: { status: 'INATIVO' },
+      data: { deletedAt: new Date() },
+    });
+  }
+
+  async reactivate(id: string, lang: string) {
+    const existing = await this.prisma.aluno.findUnique({ where: { id } });
+    if (!existing) {
+      throw new NotFoundException(this.i18n.t('alunos.not_found', { lang }));
+    }
+
+    return this.prisma.aluno.update({
+      where: { id },
+      data: { deletedAt: null },
     });
   }
 }

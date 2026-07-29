@@ -22,6 +22,7 @@ export const NEST_ROUTES = {
     findOne: (id: string) => `/alunos/${id}`,
     update: (id: string) => `/alunos/${id}`,
     remove: (id: string) => `/alunos/${id}`,
+    reactivate: (id: string) => `/alunos/${id}/reativar`,
     autorizados: {
       list: (alunoId: string) => `/alunos/${alunoId}/autorizados-busca`,
       create: (alunoId: string) => `/alunos/${alunoId}/autorizados-busca`,
@@ -35,5 +36,14 @@ export const NEST_ROUTES = {
   responsaveis: {
     search: '/responsaveis',
     update: (id: string) => `/responsaveis/${id}`,
+  },
+
+  funcionarios: {
+    list: '/funcionarios',
+    create: '/funcionarios',
+    findOne: (id: string) => `/funcionarios/${id}`,
+    update: (id: string) => `/funcionarios/${id}`,
+    remove: (id: string) => `/funcionarios/${id}`,
+    reactivate: (id: string) => `/funcionarios/${id}/reativar`,
   },
 } as const;

@@ -26,6 +26,7 @@ export type Dictionary = {
   readonly sidebar: {
     readonly dashboard: string;
     readonly alunos: string;
+    readonly funcionarios: string;
   };
   readonly alunos: {
     readonly title: string;
@@ -103,6 +104,56 @@ export type Dictionary = {
     readonly autorizadoUpdateSuccess: string;
     readonly autorizadoRemoveSuccess: string;
     readonly autorizadoErrorFallback: string;
+  };
+  readonly funcionarios: {
+    readonly title: string;
+    readonly newButton: string;
+    readonly searchPlaceholder: string;
+    readonly statusAll: string;
+    readonly statusActive: string;
+    readonly statusInactive: string;
+    readonly columnNome: string;
+    readonly columnCargo: string;
+    readonly columnStatus: string;
+    readonly columnActions: string;
+    readonly editAction: string;
+    readonly activateAction: string;
+    readonly deactivateAction: string;
+    readonly toggleStatusErrorFallback: string;
+    readonly emptyState: string;
+    readonly previous: string;
+    readonly next: string;
+    readonly page: string;
+    readonly itemsPerPage: string;
+
+    readonly formTitleNew: string;
+    readonly formTitleEdit: string;
+
+    readonly fieldNome: string;
+    readonly fieldNomePlaceholder: string;
+    readonly fieldCargo: string;
+    readonly fieldCargoPlaceholder: string;
+    readonly fieldCpf: string;
+    readonly fieldCpfPlaceholder: string;
+    readonly fieldTelefone: string;
+    readonly fieldTelefonePlaceholder: string;
+    readonly fieldEmail: string;
+    readonly fieldEmailPlaceholder: string;
+    readonly fieldStatus: string;
+
+    readonly submit: string;
+    readonly submitting: string;
+    readonly cancel: string;
+
+    readonly errorNomeRequired: string;
+    readonly errorCargoRequired: string;
+    readonly errorCpfInvalid: string;
+    readonly errorEmailInvalid: string;
+    readonly errorTelefoneInvalid: string;
+
+    readonly createSuccess: string;
+    readonly updateSuccess: string;
+    readonly errorFallback: string;
   };
 };
 

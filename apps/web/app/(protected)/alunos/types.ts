@@ -1,4 +1,4 @@
-export type StatusAluno = 'ATIVO' | 'INATIVO';
+export type StatusFilter = 'ATIVO' | 'INATIVO';
 
 export interface Responsavel {
   id: string;
@@ -23,7 +23,7 @@ export interface Aluno {
   nome: string;
   dataNascimento: string;
   fotoUrl: string | null;
-  status: StatusAluno;
+  deletedAt: string | null;
   responsavelId: string;
   responsavel?: Responsavel;
   autorizadosBusca?: AutorizadoBusca[];
@@ -57,7 +57,6 @@ export interface UpdateAlunoPayload {
   nome?: string;
   dataNascimento?: string;
   fotoUrl?: string;
-  status?: StatusAluno;
 }
 
 export interface AutorizadoPayload {

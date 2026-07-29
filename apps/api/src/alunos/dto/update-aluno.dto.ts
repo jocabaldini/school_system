@@ -1,5 +1,4 @@
-import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
-import { StatusAluno } from '@prisma/client';
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class UpdateAlunoDto {
   @IsOptional()
@@ -13,8 +12,4 @@ export class UpdateAlunoDto {
   @IsOptional()
   @IsString()
   fotoUrl?: string;
-
-  @IsOptional()
-  @IsEnum(StatusAluno)
-  status?: StatusAluno;
 }

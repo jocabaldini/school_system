@@ -50,4 +50,9 @@ export class AlunosController {
   remove(@Param('id') id: string, @I18nLang() lang: string) {
     return this.alunos.remove(id, lang);
   }
+
+  @Patch(':id/reativar')
+  reactivate(@Param('id') id: string, @I18nLang() lang: string) {
+    return this.alunos.reactivate(id, lang);
+  }
 }

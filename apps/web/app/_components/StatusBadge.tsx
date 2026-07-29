@@ -1,13 +1,11 @@
-import type { StatusAluno } from '../types';
-
 interface StatusBadgeProps {
-  status: StatusAluno;
+  deletedAt: string | null;
   activeLabel: string;
   inactiveLabel: string;
 }
 
-export function StatusBadge({ status, activeLabel, inactiveLabel }: StatusBadgeProps) {
-  const isActive = status === 'ATIVO';
+export function StatusBadge({ deletedAt, activeLabel, inactiveLabel }: StatusBadgeProps) {
+  const isActive = deletedAt === null;
 
   return (
     <span

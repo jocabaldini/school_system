@@ -1,13 +1,5 @@
-import {
-  IsDateString,
-  IsEnum,
-  IsOptional,
-  IsString,
-  ValidateIf,
-  ValidateNested,
-} from 'class-validator';
+import { IsDateString, IsOptional, IsString, ValidateIf, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { StatusAluno } from '@prisma/client';
 import { CreateResponsavelInlineDto } from './create-responsavel-inline.dto';
 
 export class CreateAlunoDto {
@@ -20,10 +12,6 @@ export class CreateAlunoDto {
   @IsOptional()
   @IsString()
   fotoUrl?: string;
-
-  @IsOptional()
-  @IsEnum(StatusAluno)
-  status?: StatusAluno;
 
   // Required when `responsavel` is not provided — see AlunosService.create for the XOR check.
   @ValidateIf((o: CreateAlunoDto) => o.responsavel === undefined)

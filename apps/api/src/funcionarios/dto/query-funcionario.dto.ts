@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
-import { IsIn, IsInt, IsOptional, Min } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
-export class QueryAlunoDto {
+export class QueryFuncionarioDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
@@ -17,4 +17,8 @@ export class QueryAlunoDto {
   @IsOptional()
   @IsIn(['ATIVO', 'INATIVO'])
   status?: 'ATIVO' | 'INATIVO';
+
+  @IsOptional()
+  @IsString()
+  q?: string;
 }
