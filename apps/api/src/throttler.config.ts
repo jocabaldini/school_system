@@ -12,7 +12,7 @@ export function throttlerConfig(config: ConfigService): ThrottlerModuleOptions {
   if (redisUrl) {
     const client: RedisType = new Redis(redisUrl);
 
-    storage = new ThrottlerStorageRedisService(client) as unknown as ThrottlerStorage;
+    storage = new ThrottlerStorageRedisService(client);
   }
 
   const options: ThrottlerModuleOptions = {

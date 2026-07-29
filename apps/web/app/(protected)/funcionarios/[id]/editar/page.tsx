@@ -19,24 +19,25 @@ export default async function EditarFuncionarioPage({ params }: EditarFuncionari
   const dict = getDictionary(locale);
   const user = await getMe();
 
+  let funcionario;
   try {
-    const funcionario = await getFuncionario(id);
-
-    return (
-      <>
-        <Navbar
-          userName={user?.name ?? ''}
-          dict={dict.navbar}
-          currentLocale={locale}
-          title={dict.funcionarios.formTitleEdit}
-        />
-        <FuncionarioFormClient dict={dict.funcionarios} funcionario={funcionario} />
-      </>
-    );
+    funcionario = await getFuncionario(id);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) {
       notFound();
     }
     throw err;
   }
+
+  return (
+    <>
+      <Navbar
+        userName={user?.name ?? ''}
+        dict={dict.navbar}
+        currentLocale={locale}
+        title={dict.funcionarios.formTitleEdit}
+      />
+      <FuncionarioFormClient dict={dict.funcionarios} funcionario={funcionario} />
+    </>
+  );
 }

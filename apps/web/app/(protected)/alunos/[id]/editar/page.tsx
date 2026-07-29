@@ -19,24 +19,25 @@ export default async function EditarAlunoPage({ params }: EditarAlunoPageProps) 
   const dict = getDictionary(locale);
   const user = await getMe();
 
+  let aluno;
   try {
-    const aluno = await getAluno(id);
-
-    return (
-      <>
-        <Navbar
-          userName={user?.name ?? ''}
-          dict={dict.navbar}
-          currentLocale={locale}
-          title={dict.alunos.formTitleEdit}
-        />
-        <AlunoFormClient dict={dict.alunos} aluno={aluno} />
-      </>
-    );
+    aluno = await getAluno(id);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) {
       notFound();
     }
     throw err;
   }
+
+  return (
+    <>
+      <Navbar
+        userName={user?.name ?? ''}
+        dict={dict.navbar}
+        currentLocale={locale}
+        title={dict.alunos.formTitleEdit}
+      />
+      <AlunoFormClient dict={dict.alunos} aluno={aluno} />
+    </>
+  );
 }

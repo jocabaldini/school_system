@@ -46,6 +46,14 @@
     "prettier": "^3.4.2",
     "tsx": "^4.21.0"
   },
+  "overrides": {
+    "effect": "3.20.0",
+    "@babel/core": "7.29.7",
+    "next": {
+      "postcss": "8.5.25",
+      "sharp": "0.35.3"
+    }
+  },
   "lint-staged": {
     "apps/api/**/*.ts": [
       "eslint --fix --no-warn-ignored -c apps/api/eslint.config.mjs",
