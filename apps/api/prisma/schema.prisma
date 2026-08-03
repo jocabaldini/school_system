@@ -14,14 +14,14 @@ enum Role {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  email            String    @unique
+  id               String   @id @default(cuid())
+  email            String   @unique
   name             String?
   passwordHash     String
   refreshTokenHash String?
-  role             Role      @default(USER)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  role             Role     @default(USER)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model Guardian {
@@ -44,6 +44,7 @@ model Student {
   guardianId        String
   guardian          Guardian           @relation(fields: [guardianId], references: [id])
   authorizedPickups AuthorizedPickup[]
+  enrollments       Enrollment[]
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
 }
@@ -58,13 +59,58 @@ model AuthorizedPickup {
 }
 
 model Employee {
-  id        String    @id @default(cuid())
-  name      String
-  position  String
-  cpf       String?   @unique
-  phone     String?
-  email     String?
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id                       String        @id @default(cuid())
+  name                     String
+  position                 String
+  cpf                      String?       @unique
+  phone                    String?
+  email                    String?
+  deletedAt                DateTime?
+  schoolClassesAsTeacher   SchoolClass[] @relation("MainTeacher")
+  schoolClassesAsAssistant SchoolClass[] @relation("AssistantTeacher")
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+}
+
+model SchoolClass {
+  id          String       @id @default(cuid())
+  name        String
+  schoolYear  Int
+  maxCapacity Int
+  teacherId   String
+  teacher     Employee     @relation("MainTeacher", fields: [teacherId], references: [id])
+  assistantId String?
+  assistant   Employee?    @relation("AssistantTeacher", fields: [assistantId], references: [id])
+  enrollments Enrollment[]
+  deletedAt   DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([name, schoolYear])
+}
+
+model Enrollment {
+  id                 String      @id @default(cuid())
+  studentId          String
+  student            Student     @relation(fields: [studentId], references: [id])
+  schoolClassId      String
+  schoolClass        SchoolClass @relation(fields: [schoolClassId], references: [id])
+  startTime          DateTime    @db.Time
+  endTime            DateTime    @db.Time
+  breakStart         DateTime?   @db.Time
+  breakEnd           DateTime?   @db.Time
+  discountPercentage Decimal     @default(0)
+  tuitionAmount      Decimal
+  startDate          DateTime
+  endDate            DateTime?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+}
+
+model Settings {
+  id                    String   @id @default(cuid())
+  pricePerHour          Decimal
+  defaultSchoolDays     Int      @default(20)
+  latePenaltyPercentage Decimal  @default(10)
+  updatedAt             DateTime @updatedAt
 }

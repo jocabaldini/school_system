@@ -10,6 +10,9 @@ import { UsersModule } from './users/users.module';
 import { StudentsModule } from './students/students.module';
 import { GuardiansModule } from './guardians/guardians.module';
 import { EmployeesModule } from './employees/employees.module';
+import { SchoolClassesModule } from './school-classes/school-classes.module';
+import { SettingsModule } from './settings/settings.module';
+import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { throttlerConfig } from './throttler.config';
 import { envValidationSchema } from './config/env.validation';
 import { LoggerModule } from './common/logger/logger.module';
@@ -53,6 +56,9 @@ import { RequestContextMiddleware } from './common/request-context/request-conte
     StudentsModule,
     GuardiansModule,
     EmployeesModule,
+    SchoolClassesModule,
+    SettingsModule,
+    EnrollmentsModule,
   ],
   controllers: [HealthController],
 })

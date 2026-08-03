@@ -1,0 +1,6 @@
+{
+  "not_found": "Matrícula não encontrada",
+  "student_not_found": "Aluno não encontrado",
+  "school_class_not_found": "Turma não encontrada ou inativa",
+  "school_class_full": "Turma atingiu a capacidade máxima"
+}

@@ -1,0 +1,6 @@
+{
+  "not_found": "Class not found",
+  "teacher_not_found": "Teacher not found or inactive",
+  "assistant_not_found": "Assistant not found or inactive",
+  "duplicate": "A class with this name already exists for this school year"
+}

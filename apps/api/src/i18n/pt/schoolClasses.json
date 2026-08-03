@@ -1,0 +1,6 @@
+{
+  "not_found": "Turma não encontrada",
+  "teacher_not_found": "Professor não encontrado ou inativo",
+  "assistant_not_found": "Auxiliar não encontrado ou inativo",
+  "duplicate": "Já existe uma turma com esse nome para esse ano letivo"
+}

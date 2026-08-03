@@ -1,0 +1,6 @@
+{
+  "not_found": "Enrollment not found",
+  "student_not_found": "Student not found",
+  "school_class_not_found": "Class not found or inactive",
+  "school_class_full": "Class has reached its maximum capacity"
+}
