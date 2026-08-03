@@ -1,0 +1,6 @@
+{
+  "not_found": "Student not found",
+  "guardian_not_found": "Guardian not found",
+  "guardian_xor": "Provide either guardianId or guardian, not both",
+  "authorized_pickup_not_found": "Authorized pickup person not found"
+}

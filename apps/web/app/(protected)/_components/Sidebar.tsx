@@ -12,8 +12,8 @@ interface SidebarProps {
 // Add each menu item alongside its module (Items 3-6 of the backlog) to avoid broken links.
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'dashboard' as const },
-  { href: '/alunos', label: 'alunos' as const },
-  { href: '/funcionarios', label: 'funcionarios' as const },
+  { href: '/students', label: 'students' as const },
+  { href: '/employees', label: 'employees' as const },
 ];
 
 export default function Sidebar({ dict }: SidebarProps) {

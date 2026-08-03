@@ -1,0 +1,6 @@
+{
+  "not_found": "Aluno não encontrado",
+  "guardian_not_found": "Responsável não encontrado",
+  "guardian_xor": "Informe guardianId ou guardian, não ambos",
+  "authorized_pickup_not_found": "Pessoa autorizada para busca não encontrada"
+}

@@ -7,9 +7,9 @@ import { HealthController } from './health.controller';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { AlunosModule } from './alunos/alunos.module';
-import { ResponsaveisModule } from './responsaveis/responsaveis.module';
-import { FuncionariosModule } from './funcionarios/funcionarios.module';
+import { StudentsModule } from './students/students.module';
+import { GuardiansModule } from './guardians/guardians.module';
+import { EmployeesModule } from './employees/employees.module';
 import { throttlerConfig } from './throttler.config';
 import { envValidationSchema } from './config/env.validation';
 import { LoggerModule } from './common/logger/logger.module';
@@ -50,9 +50,9 @@ import { RequestContextMiddleware } from './common/request-context/request-conte
     PrismaModule,
     AuthModule,
     UsersModule,
-    AlunosModule,
-    ResponsaveisModule,
-    FuncionariosModule,
+    StudentsModule,
+    GuardiansModule,
+    EmployeesModule,
   ],
   controllers: [HealthController],
 })

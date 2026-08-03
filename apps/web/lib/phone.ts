@@ -1,5 +1,5 @@
 /** Formats digits progressively as (00) 0000-0000 (10 digits) or (00) 00000-0000 (11 digits). */
-export function formatTelefone(value: string): string {
+export function formatPhone(value: string): string {
   const digits = value.replace(/\D/g, '').slice(0, 11);
   if (!digits) return '';
 
@@ -14,8 +14,8 @@ export function formatTelefone(value: string): string {
   return lineEnd ? `(${ddd}) ${localPart}-${lineEnd}` : `(${ddd}) ${localPart}`;
 }
 
-/** Telefone is optional — empty is valid; otherwise requires 10 or 11 digits (DDD + number). */
-export function isValidTelefone(value: string): boolean {
+/** Phone is optional — empty is valid; otherwise requires 10 or 11 digits (area code + number). */
+export function isValidPhone(value: string): boolean {
   const digits = value.replace(/\D/g, '');
   if (!digits) return true;
   return digits.length === 10 || digits.length === 11;

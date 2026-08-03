@@ -21,6 +21,10 @@ Built on top of `nest_next_template` boilerplate.
 - Whenever the app is run for testing or verification (dev servers, Playwright, or any background process), kill every process that was started before finishing the task. Never leave servers running in the background for the developer to discover and kill later.
 - Conventional Commits enforced via Husky: `feat`, `fix`, `chore`, `docs`, `test`, `refactor`, `style`, `ci`, `perf`.
 
+## Naming conventions
+
+All code must be written in English: Prisma model/table/column names, TypeScript classes, variables, function names, API routes, folders and files. Only the i18n translation strings themselves (the actual en/pt text shown to users) stay bilingual — never the code identifiers around them.
+
 ## Tech stack
 
 | Layer | Technology |
@@ -68,22 +72,33 @@ apps/api/src/
   i18n/                   — translation files (en/, pt/)
   prisma/                 — PrismaService
   users/                  — Users CRUD with RBAC
+  students/               — Student CRUD + nested authorized-pickups sub-resource
+  guardians/              — Guardian read/update (created inline via students)
+  employees/              — Employee CRUD
 
 apps/web/
   app/(auth)/login/
     page.tsx
     view/LoginClient.tsx
   app/(protected)/
-    _components/Navbar.tsx
+    _components/Sidebar.tsx
     dashboard/
       page.tsx
       actions.ts
       view/DashboardClient.tsx
-  app/_components/Toast.tsx
+    students/
+      page.tsx, types.ts, actions.ts, new/page.tsx, [id]/edit/page.tsx
+      view/StudentsListClient.tsx, view/StudentFormClient.tsx
+    employees/
+      page.tsx, types.ts, actions.ts, new/page.tsx, [id]/edit/page.tsx
+      view/EmployeesListClient.tsx, view/EmployeeFormClient.tsx
+  app/_components/Toast.tsx, StatusBadge.tsx
   app/api/[...path]/      — API proxy route
   app/layout.tsx
   app/page.tsx            — redirects to /dashboard
+  lib/api/                — routes.ts (NEST_ROUTES), config.ts, errors.ts, client.ts
   lib/auth/               — session, login/logout actions
+  lib/i18n/                — Dictionary type + pt-BR/en-US locales
   proxy.ts                — route protection + token refresh
 ```
 
@@ -105,6 +120,51 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
+
+model Guardian {
+  id        String    @id @default(cuid())
+  name      String
+  cpf       String    @unique
+  phone     String?
+  email     String?
+  students  Student[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Student {
+  id                String             @id @default(cuid())
+  name              String
+  birthDate         DateTime
+  photoUrl          String?
+  deletedAt         DateTime?
+  guardianId        String
+  guardian          Guardian           @relation(fields: [guardianId], references: [id])
+  authorizedPickups AuthorizedPickup[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model AuthorizedPickup {
+  id           String  @id @default(cuid())
+  name         String
+  relationship String
+  phone        String?
+  studentId    String
+  student      Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Employee {
+  id        String    @id @default(cuid())
+  name      String
+  position  String
+  cpf       String?   @unique
+  phone     String?
+  email     String?
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
 ```
 
 ## API endpoints (current)
@@ -120,6 +180,28 @@ GET    /users/:id        — ADMIN or own
 PATCH  /users/:id        — ADMIN or own
 DELETE /users/:id        — ADMIN only
 GET    /health           — public
+
+POST   /students                                    — ADMIN only
+GET    /students                                     — ADMIN only
+GET    /students/:id                                  — ADMIN only
+PATCH  /students/:id                                  — ADMIN only
+DELETE /students/:id                                  — ADMIN only (soft delete)
+PATCH  /students/:id/reactivate                       — ADMIN only
+POST   /students/:studentId/authorized-pickups         — ADMIN only
+GET    /students/:studentId/authorized-pickups         — ADMIN only
+PATCH  /students/:studentId/authorized-pickups/:pickupId  — ADMIN only
+DELETE /students/:studentId/authorized-pickups/:pickupId  — ADMIN only
+
+GET    /guardians        — ADMIN only
+GET    /guardians/:id    — ADMIN only
+PATCH  /guardians/:id    — ADMIN only
+
+POST   /employees               — ADMIN only
+GET    /employees               — ADMIN only
+GET    /employees/:id           — ADMIN only
+PATCH  /employees/:id           — ADMIN only
+DELETE /employees/:id           — ADMIN only (soft delete)
+PATCH  /employees/:id/reactivate — ADMIN only
 ```
 
 ## Running locally

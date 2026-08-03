@@ -16,34 +16,34 @@ export const NEST_ROUTES = {
     remove: (id: string) => `/users/${id}`,
   },
 
-  alunos: {
-    list: '/alunos',
-    create: '/alunos',
-    findOne: (id: string) => `/alunos/${id}`,
-    update: (id: string) => `/alunos/${id}`,
-    remove: (id: string) => `/alunos/${id}`,
-    reactivate: (id: string) => `/alunos/${id}/reativar`,
-    autorizados: {
-      list: (alunoId: string) => `/alunos/${alunoId}/autorizados-busca`,
-      create: (alunoId: string) => `/alunos/${alunoId}/autorizados-busca`,
-      update: (alunoId: string, autorizadoId: string) =>
-        `/alunos/${alunoId}/autorizados-busca/${autorizadoId}`,
-      remove: (alunoId: string, autorizadoId: string) =>
-        `/alunos/${alunoId}/autorizados-busca/${autorizadoId}`,
+  students: {
+    list: '/students',
+    create: '/students',
+    findOne: (id: string) => `/students/${id}`,
+    update: (id: string) => `/students/${id}`,
+    remove: (id: string) => `/students/${id}`,
+    reactivate: (id: string) => `/students/${id}/reactivate`,
+    authorizedPickups: {
+      list: (studentId: string) => `/students/${studentId}/authorized-pickups`,
+      create: (studentId: string) => `/students/${studentId}/authorized-pickups`,
+      update: (studentId: string, pickupId: string) =>
+        `/students/${studentId}/authorized-pickups/${pickupId}`,
+      remove: (studentId: string, pickupId: string) =>
+        `/students/${studentId}/authorized-pickups/${pickupId}`,
     },
   },
 
-  responsaveis: {
-    search: '/responsaveis',
-    update: (id: string) => `/responsaveis/${id}`,
+  guardians: {
+    search: '/guardians',
+    update: (id: string) => `/guardians/${id}`,
   },
 
-  funcionarios: {
-    list: '/funcionarios',
-    create: '/funcionarios',
-    findOne: (id: string) => `/funcionarios/${id}`,
-    update: (id: string) => `/funcionarios/${id}`,
-    remove: (id: string) => `/funcionarios/${id}`,
-    reactivate: (id: string) => `/funcionarios/${id}/reativar`,
+  employees: {
+    list: '/employees',
+    create: '/employees',
+    findOne: (id: string) => `/employees/${id}`,
+    update: (id: string) => `/employees/${id}`,
+    remove: (id: string) => `/employees/${id}`,
+    reactivate: (id: string) => `/employees/${id}/reactivate`,
   },
 } as const;

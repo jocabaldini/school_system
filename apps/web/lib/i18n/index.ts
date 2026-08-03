@@ -25,18 +25,18 @@ export type Dictionary = {
   };
   readonly sidebar: {
     readonly dashboard: string;
-    readonly alunos: string;
-    readonly funcionarios: string;
+    readonly students: string;
+    readonly employees: string;
   };
-  readonly alunos: {
+  readonly students: {
     readonly title: string;
     readonly newButton: string;
     readonly searchPlaceholder: string;
     readonly statusAll: string;
     readonly statusActive: string;
     readonly statusInactive: string;
-    readonly columnNome: string;
-    readonly columnResponsavel: string;
+    readonly columnName: string;
+    readonly columnGuardian: string;
     readonly columnStatus: string;
     readonly columnActions: string;
     readonly editAction: string;
@@ -51,69 +51,69 @@ export type Dictionary = {
 
     readonly formTitleNew: string;
     readonly formTitleEdit: string;
-    readonly tabDados: string;
-    readonly tabResponsavel: string;
-    readonly tabAutorizados: string;
-    readonly tabAutorizadosDisabled: string;
+    readonly tabData: string;
+    readonly tabGuardian: string;
+    readonly tabAuthorizedPickups: string;
+    readonly tabAuthorizedPickupsDisabled: string;
 
-    readonly fieldNome: string;
-    readonly fieldNomePlaceholder: string;
-    readonly fieldDataNascimento: string;
-    readonly fieldFotoUrl: string;
-    readonly fieldFotoUrlPlaceholder: string;
+    readonly fieldName: string;
+    readonly fieldNamePlaceholder: string;
+    readonly fieldBirthDate: string;
+    readonly fieldPhotoUrl: string;
+    readonly fieldPhotoUrlPlaceholder: string;
     readonly fieldStatus: string;
 
-    readonly responsavelModeExisting: string;
-    readonly responsavelModeNew: string;
-    readonly responsavelSearchLabel: string;
-    readonly responsavelSearchPlaceholder: string;
-    readonly responsavelSearchNoResults: string;
-    readonly responsavelSelectedLabel: string;
-    readonly responsavelChangeButton: string;
-    readonly fieldResponsavelNome: string;
+    readonly guardianModeExisting: string;
+    readonly guardianModeNew: string;
+    readonly guardianSearchLabel: string;
+    readonly guardianSearchPlaceholder: string;
+    readonly guardianSearchNoResults: string;
+    readonly guardianSelectedLabel: string;
+    readonly guardianChangeButton: string;
+    readonly fieldGuardianName: string;
     readonly fieldCpf: string;
     readonly fieldCpfPlaceholder: string;
-    readonly fieldTelefone: string;
-    readonly fieldTelefonePlaceholder: string;
+    readonly fieldPhone: string;
+    readonly fieldPhonePlaceholder: string;
     readonly fieldEmail: string;
     readonly fieldEmailPlaceholder: string;
 
-    readonly autorizadosEmpty: string;
-    readonly autorizadosAddButton: string;
-    readonly autorizadosRemoveButton: string;
-    readonly fieldParentesco: string;
-    readonly fieldParentescoPlaceholder: string;
+    readonly authorizedPickupsEmpty: string;
+    readonly authorizedPickupsAddButton: string;
+    readonly authorizedPickupsRemoveButton: string;
+    readonly fieldRelationship: string;
+    readonly fieldRelationshipPlaceholder: string;
 
     readonly submit: string;
     readonly submitting: string;
     readonly cancel: string;
 
-    readonly errorNomeRequired: string;
-    readonly errorDataNascimentoRequired: string;
+    readonly errorNameRequired: string;
+    readonly errorBirthDateRequired: string;
     readonly errorCpfInvalid: string;
     readonly errorEmailInvalid: string;
-    readonly errorTelefoneInvalid: string;
-    readonly errorResponsavelRequired: string;
-    readonly errorResponsavelNomeRequired: string;
-    readonly errorParentescoRequired: string;
+    readonly errorPhoneInvalid: string;
+    readonly errorGuardianRequired: string;
+    readonly errorGuardianNameRequired: string;
+    readonly errorRelationshipRequired: string;
 
     readonly createSuccess: string;
     readonly updateSuccess: string;
     readonly errorFallback: string;
-    readonly autorizadoAddSuccess: string;
-    readonly autorizadoUpdateSuccess: string;
-    readonly autorizadoRemoveSuccess: string;
-    readonly autorizadoErrorFallback: string;
+    readonly authorizedPickupAddSuccess: string;
+    readonly authorizedPickupUpdateSuccess: string;
+    readonly authorizedPickupRemoveSuccess: string;
+    readonly authorizedPickupErrorFallback: string;
   };
-  readonly funcionarios: {
+  readonly employees: {
     readonly title: string;
     readonly newButton: string;
     readonly searchPlaceholder: string;
     readonly statusAll: string;
     readonly statusActive: string;
     readonly statusInactive: string;
-    readonly columnNome: string;
-    readonly columnCargo: string;
+    readonly columnName: string;
+    readonly columnPosition: string;
     readonly columnStatus: string;
     readonly columnActions: string;
     readonly editAction: string;
@@ -129,14 +129,14 @@ export type Dictionary = {
     readonly formTitleNew: string;
     readonly formTitleEdit: string;
 
-    readonly fieldNome: string;
-    readonly fieldNomePlaceholder: string;
-    readonly fieldCargo: string;
-    readonly fieldCargoPlaceholder: string;
+    readonly fieldName: string;
+    readonly fieldNamePlaceholder: string;
+    readonly fieldPosition: string;
+    readonly fieldPositionPlaceholder: string;
     readonly fieldCpf: string;
     readonly fieldCpfPlaceholder: string;
-    readonly fieldTelefone: string;
-    readonly fieldTelefonePlaceholder: string;
+    readonly fieldPhone: string;
+    readonly fieldPhonePlaceholder: string;
     readonly fieldEmail: string;
     readonly fieldEmailPlaceholder: string;
     readonly fieldStatus: string;
@@ -145,11 +145,11 @@ export type Dictionary = {
     readonly submitting: string;
     readonly cancel: string;
 
-    readonly errorNomeRequired: string;
-    readonly errorCargoRequired: string;
+    readonly errorNameRequired: string;
+    readonly errorPositionRequired: string;
     readonly errorCpfInvalid: string;
     readonly errorEmailInvalid: string;
-    readonly errorTelefoneInvalid: string;
+    readonly errorPhoneInvalid: string;
 
     readonly createSuccess: string;
     readonly updateSuccess: string;
