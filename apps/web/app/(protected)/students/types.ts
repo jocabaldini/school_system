@@ -74,3 +74,51 @@ export interface UpdateGuardianPayload {
 
 export type UpdateGuardianResult =
   { ok: true; data: Guardian } | { ok: false; status: number; message: string };
+
+export interface SchoolClassOption {
+  id: string;
+  name: string;
+  schoolYear: number;
+  maxCapacity: number;
+}
+
+export interface Enrollment {
+  id: string;
+  studentId: string;
+  schoolClassId: string;
+  schoolClass?: SchoolClassOption;
+  startTime: string;
+  endTime: string;
+  breakStart: string | null;
+  breakEnd: string | null;
+  discountPercentage: string;
+  tuitionAmount: string;
+  startDate: string;
+  endDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateEnrollmentPayload {
+  schoolClassId: string;
+  startTime: string;
+  endTime: string;
+  breakStart?: string;
+  breakEnd?: string;
+  discountPercentage?: number;
+  tuitionAmount: number;
+  startDate: string;
+}
+
+export interface CalculateEnrollmentPayload {
+  startTime: string;
+  endTime: string;
+  breakStart?: string;
+  breakEnd?: string;
+  discountPercentage?: number;
+}
+
+export interface CalculateEnrollmentResult {
+  dailyHours: number;
+  suggestedAmount: number;
+}

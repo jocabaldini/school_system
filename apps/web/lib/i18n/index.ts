@@ -27,6 +27,8 @@ export type Dictionary = {
     readonly dashboard: string;
     readonly students: string;
     readonly employees: string;
+    readonly schoolClasses: string;
+    readonly settings: string;
   };
   readonly students: {
     readonly title: string;
@@ -55,6 +57,8 @@ export type Dictionary = {
     readonly tabGuardian: string;
     readonly tabAuthorizedPickups: string;
     readonly tabAuthorizedPickupsDisabled: string;
+    readonly tabEnrollment: string;
+    readonly tabEnrollmentDisabled: string;
 
     readonly fieldName: string;
     readonly fieldNamePlaceholder: string;
@@ -104,6 +108,34 @@ export type Dictionary = {
     readonly authorizedPickupUpdateSuccess: string;
     readonly authorizedPickupRemoveSuccess: string;
     readonly authorizedPickupErrorFallback: string;
+
+    readonly currentEnrollmentLabel: string;
+    readonly enrollButton: string;
+    readonly transferButton: string;
+    readonly fieldSchoolClass: string;
+    readonly fieldSchoolClassPlaceholder: string;
+    readonly fieldFullTime: string;
+    readonly fieldStartTime: string;
+    readonly fieldEndTime: string;
+    readonly fieldBreakStart: string;
+    readonly fieldBreakEnd: string;
+    readonly fieldStartDate: string;
+    readonly fieldDiscountPercentage: string;
+    readonly fieldTuitionAmount: string;
+    readonly suggestedAmountLabel: string;
+    readonly useSuggestedAmountButton: string;
+    readonly errorSchoolClassRequired: string;
+    readonly errorStartTimeRequired: string;
+    readonly errorEndTimeRequired: string;
+    readonly errorTuitionAmountRequired: string;
+    readonly enrollSuccess: string;
+    readonly transferSuccess: string;
+    readonly enrollmentErrorFallback: string;
+    readonly enrollmentHistoryTitle: string;
+    readonly enrollmentHistoryEmpty: string;
+    readonly columnClass: string;
+    readonly columnPeriod: string;
+    readonly columnAmount: string;
   };
   readonly employees: {
     readonly title: string;
@@ -153,6 +185,71 @@ export type Dictionary = {
 
     readonly createSuccess: string;
     readonly updateSuccess: string;
+    readonly errorFallback: string;
+  };
+  readonly schoolClasses: {
+    readonly title: string;
+    readonly newButton: string;
+    readonly searchPlaceholder: string;
+    readonly schoolYearFilterPlaceholder: string;
+    readonly statusAll: string;
+    readonly statusActive: string;
+    readonly statusInactive: string;
+    readonly columnName: string;
+    readonly columnSchoolYear: string;
+    readonly columnTeacher: string;
+    readonly columnAssistant: string;
+    readonly columnOccupancy: string;
+    readonly columnStatus: string;
+    readonly columnActions: string;
+    readonly editAction: string;
+    readonly activateAction: string;
+    readonly deactivateAction: string;
+    readonly toggleStatusErrorFallback: string;
+    readonly emptyState: string;
+    readonly previous: string;
+    readonly next: string;
+    readonly page: string;
+    readonly itemsPerPage: string;
+
+    readonly formTitleNew: string;
+    readonly formTitleEdit: string;
+
+    readonly fieldName: string;
+    readonly fieldNamePlaceholder: string;
+    readonly fieldSchoolYear: string;
+    readonly fieldMaxCapacity: string;
+    readonly fieldMaxCapacityPlaceholder: string;
+    readonly fieldTeacher: string;
+    readonly fieldTeacherPlaceholder: string;
+    readonly fieldAssistant: string;
+    readonly fieldAssistantPlaceholder: string;
+    readonly fieldStatus: string;
+
+    readonly submit: string;
+    readonly submitting: string;
+    readonly cancel: string;
+
+    readonly errorNameRequired: string;
+    readonly errorSchoolYearRequired: string;
+    readonly errorMaxCapacityRequired: string;
+    readonly errorTeacherRequired: string;
+
+    readonly updateSuccess: string;
+    readonly errorFallback: string;
+  };
+  readonly settings: {
+    readonly title: string;
+    readonly fieldPricePerHour: string;
+    readonly fieldPricePerHourPlaceholder: string;
+    readonly fieldDefaultSchoolDays: string;
+    readonly fieldDefaultSchoolDaysPlaceholder: string;
+    readonly fieldLatePenaltyPercentage: string;
+    readonly fieldLatePenaltyPercentagePlaceholder: string;
+    readonly submit: string;
+    readonly submitting: string;
+    readonly errorFieldsRequired: string;
+    readonly saveSuccess: string;
     readonly errorFallback: string;
   };
 };

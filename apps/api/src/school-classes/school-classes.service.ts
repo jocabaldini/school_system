@@ -89,6 +89,11 @@ export class SchoolClassesService {
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { createdAt: 'desc' },
+        include: {
+          teacher: true,
+          assistant: true,
+          _count: { select: { enrollments: { where: { endDate: null } } } },
+        },
       }),
       this.prisma.schoolClass.count({ where }),
     ]);
@@ -97,7 +102,14 @@ export class SchoolClassesService {
   }
 
   async findOne(id: string, lang: string) {
-    const schoolClass = await this.prisma.schoolClass.findUnique({ where: { id } });
+    const schoolClass = await this.prisma.schoolClass.findUnique({
+      where: { id },
+      include: {
+        teacher: true,
+        assistant: true,
+        _count: { select: { enrollments: { where: { endDate: null } } } },
+      },
+    });
     if (!schoolClass) {
       throw new NotFoundException(this.i18n.t('schoolClasses.not_found', { lang }));
     }
@@ -145,6 +157,15 @@ export class SchoolClassesService {
     return this.prisma.schoolClass.update({
       where: { id },
       data: { deletedAt: new Date() },
+    });
+  }
+
+  async reactivate(id: string, lang: string) {
+    await this.findOne(id, lang);
+
+    return this.prisma.schoolClass.update({
+      where: { id },
+      data: { deletedAt: null },
     });
   }
 }

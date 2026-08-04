@@ -31,6 +31,12 @@ export const NEST_ROUTES = {
       remove: (studentId: string, pickupId: string) =>
         `/students/${studentId}/authorized-pickups/${pickupId}`,
     },
+    enrollments: {
+      list: (studentId: string) => `/students/${studentId}/enrollments`,
+      create: (studentId: string) => `/students/${studentId}/enrollments`,
+      update: (studentId: string, enrollmentId: string) =>
+        `/students/${studentId}/enrollments/${enrollmentId}`,
+    },
   },
 
   guardians: {
@@ -45,5 +51,23 @@ export const NEST_ROUTES = {
     update: (id: string) => `/employees/${id}`,
     remove: (id: string) => `/employees/${id}`,
     reactivate: (id: string) => `/employees/${id}/reactivate`,
+  },
+
+  schoolClasses: {
+    list: '/school-classes',
+    create: '/school-classes',
+    findOne: (id: string) => `/school-classes/${id}`,
+    update: (id: string) => `/school-classes/${id}`,
+    remove: (id: string) => `/school-classes/${id}`,
+    reactivate: (id: string) => `/school-classes/${id}/reactivate`,
+  },
+
+  settings: {
+    get: '/settings',
+    update: '/settings',
+  },
+
+  enrollments: {
+    calculate: '/enrollments/calculate',
   },
 } as const;

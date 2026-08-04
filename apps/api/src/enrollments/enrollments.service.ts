@@ -124,6 +124,7 @@ export class EnrollmentsService {
     return this.prisma.enrollment.findMany({
       where: { studentId },
       orderBy: { startDate: 'desc' },
+      include: { schoolClass: true },
     });
   }
 

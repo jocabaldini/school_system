@@ -19,14 +19,24 @@ import {
   updateGuardian,
   updateStudent,
 } from '../actions';
-import type { AuthorizedPickup, Guardian, StatusFilter, Student } from '../types';
+import type {
+  AuthorizedPickup,
+  Enrollment,
+  Guardian,
+  SchoolClassOption,
+  StatusFilter,
+  Student,
+} from '../types';
+import EnrollmentTab from './EnrollmentTab';
 
-type Tab = 'data' | 'guardian' | 'authorizedPickups';
+type Tab = 'data' | 'guardian' | 'authorizedPickups' | 'enrollment';
 type GuardianMode = 'existing' | 'new';
 
 interface StudentFormClientProps {
   dict: Dictionary['students'];
   student: Student | null;
+  initialEnrollments?: Enrollment[];
+  activeSchoolClasses?: SchoolClassOption[];
 }
 
 const inputClass =
@@ -34,7 +44,12 @@ const inputClass =
 const labelClass = 'text-sm font-medium text-ink-muted';
 const errorClass = 'text-xs text-badge-danger-ink';
 
-export default function StudentFormClient({ dict, student }: StudentFormClientProps) {
+export default function StudentFormClient({
+  dict,
+  student,
+  initialEnrollments = [],
+  activeSchoolClasses = [],
+}: StudentFormClientProps) {
   const router = useRouter();
   const isEdit = student !== null;
 
@@ -309,10 +324,21 @@ export default function StudentFormClient({ dict, student }: StudentFormClientPr
     });
   }
 
-  const tabs: { key: Tab; label: string; disabled?: boolean }[] = [
+  const tabs: { key: Tab; label: string; disabled?: boolean; disabledMessage?: string }[] = [
     { key: 'data', label: dict.tabData },
     { key: 'guardian', label: dict.tabGuardian },
-    { key: 'authorizedPickups', label: dict.tabAuthorizedPickups, disabled: !isEdit },
+    {
+      key: 'authorizedPickups',
+      label: dict.tabAuthorizedPickups,
+      disabled: !isEdit,
+      disabledMessage: dict.tabAuthorizedPickupsDisabled,
+    },
+    {
+      key: 'enrollment',
+      label: dict.tabEnrollment,
+      disabled: !isEdit,
+      disabledMessage: dict.tabEnrollmentDisabled,
+    },
   ];
 
   return (
@@ -329,7 +355,7 @@ export default function StudentFormClient({ dict, student }: StudentFormClientPr
               type="button"
               disabled={tab.disabled}
               onClick={() => setActiveTab(tab.key)}
-              title={tab.disabled ? dict.tabAuthorizedPickupsDisabled : undefined}
+              title={tab.disabled ? tab.disabledMessage : undefined}
               className={`border-b-2 px-4 py-3 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50 ${
                 activeTab === tab.key
                   ? 'border-primary-600 text-ink'
@@ -719,6 +745,16 @@ export default function StudentFormClient({ dict, student }: StudentFormClientPr
                 {dict.authorizedPickupsAddButton}
               </button>
             </div>
+          )}
+
+          {activeTab === 'enrollment' && isEdit && (
+            <EnrollmentTab
+              dict={dict}
+              studentId={student.id}
+              initialEnrollments={initialEnrollments}
+              activeSchoolClasses={activeSchoolClasses}
+              showToast={showToast}
+            />
           )}
 
           <div className="mt-2 flex gap-3 border-t border-line pt-4">

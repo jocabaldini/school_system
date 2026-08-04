@@ -50,4 +50,9 @@ export class SchoolClassesController {
   remove(@Param('id') id: string, @I18nLang() lang: string) {
     return this.schoolClasses.remove(id, lang);
   }
+
+  @Patch(':id/reactivate')
+  reactivate(@Param('id') id: string, @I18nLang() lang: string) {
+    return this.schoolClasses.reactivate(id, lang);
+  }
 }

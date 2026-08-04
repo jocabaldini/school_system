@@ -14,6 +14,8 @@ const NAV_ITEMS = [
   { href: '/dashboard', label: 'dashboard' as const },
   { href: '/students', label: 'students' as const },
   { href: '/employees', label: 'employees' as const },
+  { href: '/school-classes', label: 'schoolClasses' as const },
+  { href: '/settings', label: 'settings' as const },
 ];
 
 export default function Sidebar({ dict }: SidebarProps) {

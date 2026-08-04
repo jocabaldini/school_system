@@ -76,6 +76,9 @@ apps/api/src/
   students/               — Student CRUD + nested authorized-pickups sub-resource
   guardians/              — Guardian read/update (created inline via students)
   employees/              — Employee CRUD
+  school-classes/         — SchoolClass CRUD
+  settings/               — Settings singleton row (GET/PATCH only)
+  enrollments/            — /enrollments/calculate + nested under students
 
 apps/web/
   app/(auth)/login/
@@ -89,10 +92,15 @@ apps/web/
       view/DashboardClient.tsx
     students/
       page.tsx, types.ts, actions.ts, new/page.tsx, [id]/edit/page.tsx
-      view/StudentsListClient.tsx, view/StudentFormClient.tsx
+      view/StudentsListClient.tsx, view/StudentFormClient.tsx, view/EnrollmentTab.tsx
     employees/
       page.tsx, types.ts, actions.ts, new/page.tsx, [id]/edit/page.tsx
       view/EmployeesListClient.tsx, view/EmployeeFormClient.tsx
+    school-classes/
+      page.tsx, types.ts, actions.ts, new/page.tsx, [id]/edit/page.tsx
+      view/SchoolClassesListClient.tsx, view/SchoolClassFormClient.tsx
+    settings/
+      page.tsx, types.ts, actions.ts, view/SettingsFormClient.tsx
   app/_components/Toast.tsx, StatusBadge.tsx
   app/api/[...path]/      — API proxy route
   app/layout.tsx
@@ -156,17 +164,64 @@ model AuthorizedPickup {
 }
 
 model Employee {
-  id        String    @id @default(cuid())
-  name      String
-  position  String
-  cpf       String?   @unique
-  phone     String?
-  email     String?
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id                       String        @id @default(cuid())
+  name                     String
+  position                 String
+  cpf                      String?       @unique
+  phone                    String?
+  email                    String?
+  deletedAt                DateTime?
+  schoolClassesAsTeacher   SchoolClass[] @relation("MainTeacher")
+  schoolClassesAsAssistant SchoolClass[] @relation("AssistantTeacher")
+  createdAt                DateTime      @default(now())
+  updatedAt                DateTime      @updatedAt
+}
+
+model SchoolClass {
+  id          String       @id @default(cuid())
+  name        String
+  schoolYear  Int
+  maxCapacity Int
+  teacherId   String
+  teacher     Employee     @relation("MainTeacher", fields: [teacherId], references: [id])
+  assistantId String?
+  assistant   Employee?    @relation("AssistantTeacher", fields: [assistantId], references: [id])
+  enrollments Enrollment[]
+  deletedAt   DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([name, schoolYear])
+}
+
+model Enrollment {
+  id                 String      @id @default(cuid())
+  studentId          String
+  student            Student     @relation(fields: [studentId], references: [id])
+  schoolClassId      String
+  schoolClass        SchoolClass @relation(fields: [schoolClassId], references: [id])
+  startTime          DateTime    @db.Time
+  endTime            DateTime    @db.Time
+  breakStart         DateTime?   @db.Time
+  breakEnd           DateTime?   @db.Time
+  discountPercentage Decimal     @default(0)
+  tuitionAmount      Decimal
+  startDate          DateTime
+  endDate            DateTime?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+}
+
+model Settings {
+  id                    String   @id @default(cuid())
+  pricePerHour          Decimal
+  defaultSchoolDays     Int      @default(20)
+  latePenaltyPercentage Decimal  @default(10)
+  updatedAt             DateTime @updatedAt
 }
 ```
+
+`Student` also has `enrollments Enrollment[]`.
 
 ## API endpoints (current)
 
@@ -203,6 +258,21 @@ GET    /employees/:id           — ADMIN only
 PATCH  /employees/:id           — ADMIN only
 DELETE /employees/:id           — ADMIN only (soft delete)
 PATCH  /employees/:id/reactivate — ADMIN only
+
+POST   /school-classes                    — ADMIN only
+GET    /school-classes                    — ADMIN only
+GET    /school-classes/:id                — ADMIN only
+PATCH  /school-classes/:id                — ADMIN only
+DELETE /school-classes/:id                — ADMIN only (soft delete)
+PATCH  /school-classes/:id/reactivate     — ADMIN only
+
+GET    /settings          — ADMIN only
+PATCH  /settings          — ADMIN only
+
+POST   /enrollments/calculate                              — ADMIN only (stateless, no persistence)
+POST   /students/:studentId/enrollments                    — ADMIN only
+GET    /students/:studentId/enrollments                    — ADMIN only
+PATCH  /students/:studentId/enrollments/:enrollmentId      — ADMIN only
 ```
 
 ## Running locally

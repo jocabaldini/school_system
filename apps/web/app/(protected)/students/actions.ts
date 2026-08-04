@@ -7,8 +7,13 @@ import { ApiError, extractApiErrorMessage } from '@/lib/api/errors';
 import type {
   AuthorizedPickup,
   AuthorizedPickupPayload,
+  CalculateEnrollmentPayload,
+  CalculateEnrollmentResult,
+  CreateEnrollmentPayload,
   CreateStudentPayload,
+  Enrollment,
   Guardian,
+  SchoolClassOption,
   StatusFilter,
   Student,
   StudentListResult,
@@ -140,4 +145,34 @@ export async function removeAuthorizedPickup(studentId: string, pickupId: string
   await apiRequest<void>(NEST_ROUTES.students.authorizedPickups.remove(studentId, pickupId), {
     method: 'DELETE',
   });
+}
+
+export async function listEnrollments(studentId: string): Promise<Enrollment[]> {
+  return apiRequest<Enrollment[]>(NEST_ROUTES.students.enrollments.list(studentId));
+}
+
+export async function createEnrollment(
+  studentId: string,
+  payload: CreateEnrollmentPayload,
+): Promise<Enrollment> {
+  return apiRequest<Enrollment>(NEST_ROUTES.students.enrollments.create(studentId), {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function calculateEnrollment(
+  payload: CalculateEnrollmentPayload,
+): Promise<CalculateEnrollmentResult> {
+  return apiRequest<CalculateEnrollmentResult>(NEST_ROUTES.enrollments.calculate, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function listActiveSchoolClasses(): Promise<SchoolClassOption[]> {
+  const result = await apiRequest<{ data: SchoolClassOption[] }>(
+    `${NEST_ROUTES.schoolClasses.list}?status=ACTIVE&limit=200`,
+  );
+  return result.data;
 }

@@ -4,14 +4,14 @@ import { getDictionary, DEFAULT_LOCALE, LOCALE_COOKIE, type Locale } from '@/lib
 import { ApiError } from '@/lib/api/errors';
 import Navbar from '../../../_components/Navbar';
 import { getMe } from '../../../dashboard/actions';
-import { getStudent, listActiveSchoolClasses, listEnrollments } from '../../actions';
-import StudentFormClient from '../../view/StudentFormClient';
+import { getSchoolClass, listActiveEmployees } from '../../actions';
+import SchoolClassFormClient from '../../view/SchoolClassFormClient';
 
-interface EditStudentPageProps {
+interface EditSchoolClassPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function EditStudentPage({ params }: EditStudentPageProps) {
+export default async function EditSchoolClassPage({ params }: EditSchoolClassPageProps) {
   const { id } = await params;
 
   const cookieStore = await cookies();
@@ -19,9 +19,9 @@ export default async function EditStudentPage({ params }: EditStudentPageProps) 
   const dict = getDictionary(locale);
   const user = await getMe();
 
-  let student;
+  let schoolClass;
   try {
-    student = await getStudent(id);
+    schoolClass = await getSchoolClass(id);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) {
       notFound();
@@ -29,10 +29,7 @@ export default async function EditStudentPage({ params }: EditStudentPageProps) 
     throw err;
   }
 
-  const [initialEnrollments, activeSchoolClasses] = await Promise.all([
-    listEnrollments(id),
-    listActiveSchoolClasses(),
-  ]);
+  const employees = await listActiveEmployees();
 
   return (
     <>
@@ -40,13 +37,12 @@ export default async function EditStudentPage({ params }: EditStudentPageProps) 
         userName={user?.name ?? ''}
         dict={dict.navbar}
         currentLocale={locale}
-        title={dict.students.formTitleEdit}
+        title={dict.schoolClasses.formTitleEdit}
       />
-      <StudentFormClient
-        dict={dict.students}
-        student={student}
-        initialEnrollments={initialEnrollments}
-        activeSchoolClasses={activeSchoolClasses}
+      <SchoolClassFormClient
+        dict={dict.schoolClasses}
+        schoolClass={schoolClass}
+        employees={employees}
       />
     </>
   );
