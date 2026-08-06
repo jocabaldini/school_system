@@ -6,7 +6,7 @@ import { listSchoolClasses } from './actions';
 import SchoolClassesListClient from './view/SchoolClassesListClient';
 import type { StatusFilter } from './types';
 
-const DEFAULT_LIMIT = 50;
+const DEFAULT_LIMIT = 10;
 const ALLOWED_LIMITS = [10, 25, 50];
 
 interface SchoolClassesPageProps {

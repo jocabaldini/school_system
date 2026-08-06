@@ -11,7 +11,18 @@ export const ptBR = {
     errorFallback: 'Erro ao fazer login',
   },
   dashboard: {
-    title: 'Template NestJS e Next.js',
+    title: 'Painel',
+    metricActiveStudents: 'Alunos ativos',
+    metricActiveEmployees: 'Funcionários ativos',
+    metricClasses: 'Turmas',
+    metricActiveEnrollments: 'Matrículas ativas',
+    occupancyTitle: 'Ocupação das turmas',
+    occupancyEmpty: 'Nenhuma turma ativa no ano letivo atual.',
+    recentEnrollmentsTitle: 'Matrículas recentes',
+    recentEnrollmentsEmpty: 'Nenhuma matrícula registrada.',
+    columnStudent: 'Aluno',
+    columnClass: 'Turma',
+    columnStartDate: 'Data de início',
   },
   navbar: {
     logout: 'Sair',
@@ -33,6 +44,7 @@ export const ptBR = {
     statusInactive: 'Inativo',
     columnName: 'Nome',
     columnGuardian: 'Responsável',
+    columnSchoolClass: 'Turma',
     columnStatus: 'Status',
     columnActions: 'Ações',
     editAction: 'Editar',
@@ -95,8 +107,6 @@ export const ptBR = {
     errorGuardianNameRequired: 'Nome do responsável é obrigatório',
     errorRelationshipRequired: 'Parentesco é obrigatório',
 
-    createSuccess: 'Aluno cadastrado com sucesso',
-    updateSuccess: 'Aluno atualizado com sucesso',
     errorFallback: 'Erro ao salvar aluno',
     authorizedPickupAddSuccess: 'Pessoa autorizada adicionada',
     authorizedPickupUpdateSuccess: 'Pessoa autorizada atualizada',
@@ -177,8 +187,6 @@ export const ptBR = {
     errorEmailInvalid: 'Email inválido',
     errorPhoneInvalid: 'Telefone inválido',
 
-    createSuccess: 'Funcionário cadastrado com sucesso',
-    updateSuccess: 'Funcionário atualizado com sucesso',
     errorFallback: 'Erro ao salvar funcionário',
   },
   schoolClasses: {
@@ -208,6 +216,13 @@ export const ptBR = {
 
     formTitleNew: 'Nova turma',
     formTitleEdit: 'Editar turma',
+    tabData: 'Dados da turma',
+    tabStudents: 'Alunos',
+    tabStudentsDisabled: 'Disponível após salvar a turma',
+    columnStudentName: 'Aluno',
+    columnSchedule: 'Horário',
+    columnStudentStartDate: 'Data de início',
+    studentsEmpty: 'Nenhum aluno matriculado nesta turma.',
 
     fieldName: 'Nome',
     fieldNamePlaceholder: 'Nome da turma',
@@ -229,7 +244,6 @@ export const ptBR = {
     errorMaxCapacityRequired: 'Capacidade máxima é obrigatória',
     errorTeacherRequired: 'Selecione um professor',
 
-    updateSuccess: 'Turma atualizada com sucesso',
     errorFallback: 'Erro ao salvar turma',
   },
   settings: {

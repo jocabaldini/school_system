@@ -70,4 +70,8 @@ export const NEST_ROUTES = {
   enrollments: {
     calculate: '/enrollments/calculate',
   },
+
+  dashboard: {
+    summary: '/dashboard/summary',
+  },
 } as const;

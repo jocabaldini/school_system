@@ -115,6 +115,7 @@ export default function StudentsListClient({
             <tr>
               <th className="px-4 py-3 font-medium">{dict.columnName}</th>
               <th className="px-4 py-3 font-medium">{dict.columnGuardian}</th>
+              <th className="px-4 py-3 font-medium">{dict.columnSchoolClass}</th>
               <th className="px-4 py-3 font-medium">{dict.columnStatus}</th>
               <th className="px-4 py-3 font-medium">{dict.columnActions}</th>
             </tr>
@@ -122,7 +123,7 @@ export default function StudentsListClient({
           <tbody>
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-6 text-center text-ink-muted">
+                <td colSpan={5} className="px-4 py-6 text-center text-ink-muted">
                   {dict.emptyState}
                 </td>
               </tr>
@@ -131,6 +132,9 @@ export default function StudentsListClient({
               <tr key={student.id} className="border-t border-line">
                 <td className="px-4 py-3 text-ink">{student.name}</td>
                 <td className="px-4 py-3 text-ink-muted">{student.guardian?.name ?? '—'}</td>
+                <td className="px-4 py-3 text-ink-muted">
+                  {student.enrollments?.[0]?.schoolClass?.name ?? '—'}
+                </td>
                 <td className="px-4 py-3">
                   <StatusBadge
                     deletedAt={student.deletedAt}

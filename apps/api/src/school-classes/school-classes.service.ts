@@ -108,6 +108,11 @@ export class SchoolClassesService {
         teacher: true,
         assistant: true,
         _count: { select: { enrollments: { where: { endDate: null } } } },
+        enrollments: {
+          where: { endDate: null },
+          orderBy: { student: { name: 'asc' } },
+          include: { student: true },
+        },
       },
     });
     if (!schoolClass) {

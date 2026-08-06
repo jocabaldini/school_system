@@ -197,6 +197,58 @@ describe('Students (e2e)', () => {
       }
     });
 
+    it('ADMIN — includes guardian and the active enrollment school class', async () => {
+      const cpf = nextCPF();
+      const student = await request(app.getHttpServer())
+        .post('/students')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          name: `Student List Guardian ${Date.now()}`,
+          birthDate: '2020-01-01',
+          guardian: { name: 'Guardian List Test', cpf },
+        })
+        .expect(201);
+
+      const teacher = await request(app.getHttpServer())
+        .post('/employees')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ name: `Teacher List Test ${Date.now()}`, position: 'Teacher' })
+        .expect(201);
+
+      const schoolClass = await request(app.getHttpServer())
+        .post('/school-classes')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          name: `Class List Test ${Date.now()}`,
+          schoolYear: 2026,
+          maxCapacity: 10,
+          teacherId: teacher.body.id,
+        })
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .post(`/students/${student.body.id}/enrollments`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          schoolClassId: schoolClass.body.id,
+          startTime: '07:00',
+          endTime: '17:00',
+          startDate: '2026-02-02',
+          tuitionAmount: 100,
+        })
+        .expect(201);
+
+      const res = await request(app.getHttpServer())
+        .get('/students?limit=200')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+
+      const found = res.body.data.find((s: { id: string }) => s.id === student.body.id);
+      expect(found.guardian).toMatchObject({ name: 'Guardian List Test' });
+      expect(found.enrollments).toHaveLength(1);
+      expect(found.enrollments[0].schoolClass).toMatchObject({ id: schoolClass.body.id });
+    });
+
     it('USER — cannot list students (403)', async () => {
       await request(app.getHttpServer())
         .get('/students')

@@ -207,7 +207,7 @@ export default function StudentFormClient({
             return;
           }
 
-          showToast(dict.updateSuccess, 'success');
+          router.push('/students');
         } else {
           const created = await createStudent({
             name,

@@ -76,6 +76,10 @@ export class StudentsService {
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { createdAt: 'desc' },
+        include: {
+          guardian: true,
+          enrollments: { where: { endDate: null }, include: { schoolClass: true } },
+        },
       }),
       this.prisma.student.count({ where }),
     ]);

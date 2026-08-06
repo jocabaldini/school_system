@@ -3,13 +3,16 @@ import request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { createTestApp } from '../helpers/app.helper';
 import { loginAsAdmin, loginAsUser } from '../helpers/auth.helper';
+import { generateCPF } from '../helpers/cpf.helper';
 
 describe('SchoolClasses (e2e)', () => {
   let app: INestApplication;
   let adminToken: string;
   let userToken: string;
   let classSeed = 0;
+  let cpfSeed = 500000;
   const nextName = () => `Class E2E ${Date.now()}-${++classSeed}`;
+  const nextCPF = () => generateCPF(++cpfSeed);
 
   const createTeacher = async (name: string) => {
     const res = await request(app.getHttpServer())
@@ -233,6 +236,45 @@ describe('SchoolClasses (e2e)', () => {
         .expect(200);
 
       expect(res.body).toMatchObject({ id: created.body.id, teacherId });
+    });
+
+    it('ADMIN — includes active enrollments with student info', async () => {
+      const teacherId = await createTeacher('Teacher Enrollment Detail');
+      const created = await request(app.getHttpServer())
+        .post('/school-classes')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ name: nextName(), schoolYear: 2026, maxCapacity: 10, teacherId })
+        .expect(201);
+
+      const student = await request(app.getHttpServer())
+        .post('/students')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          name: `Student Class Detail ${Date.now()}`,
+          birthDate: '2020-01-01',
+          guardian: { name: 'Guardian Class Detail', cpf: nextCPF() },
+        })
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .post(`/students/${student.body.id}/enrollments`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          schoolClassId: created.body.id,
+          startTime: '07:00',
+          endTime: '17:00',
+          startDate: '2026-02-02',
+          tuitionAmount: 100,
+        })
+        .expect(201);
+
+      const res = await request(app.getHttpServer())
+        .get(`/school-classes/${created.body.id}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+
+      expect(res.body.enrollments).toHaveLength(1);
+      expect(res.body.enrollments[0].student).toMatchObject({ id: student.body.id });
     });
 
     it('ADMIN — returns 404 for non-existent school class', async () => {

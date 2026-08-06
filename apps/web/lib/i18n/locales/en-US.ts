@@ -11,7 +11,18 @@ export const enUS = {
     errorFallback: 'Failed to sign in',
   },
   dashboard: {
-    title: 'NestJS and Next.js Template',
+    title: 'Dashboard',
+    metricActiveStudents: 'Active Students',
+    metricActiveEmployees: 'Active Employees',
+    metricClasses: 'Classes',
+    metricActiveEnrollments: 'Active Enrollments',
+    occupancyTitle: 'Class occupancy',
+    occupancyEmpty: 'No active classes in the current school year.',
+    recentEnrollmentsTitle: 'Recent enrollments',
+    recentEnrollmentsEmpty: 'No enrollments registered.',
+    columnStudent: 'Student',
+    columnClass: 'Class',
+    columnStartDate: 'Start date',
   },
   navbar: {
     logout: 'Sign out',
@@ -33,6 +44,7 @@ export const enUS = {
     statusInactive: 'Inactive',
     columnName: 'Name',
     columnGuardian: 'Responsible',
+    columnSchoolClass: 'Class',
     columnStatus: 'Status',
     columnActions: 'Actions',
     editAction: 'Edit',
@@ -95,8 +107,6 @@ export const enUS = {
     errorGuardianNameRequired: "Responsible party's name is required",
     errorRelationshipRequired: 'Relationship is required',
 
-    createSuccess: 'Student created successfully',
-    updateSuccess: 'Student updated successfully',
     errorFallback: 'Failed to save student',
     authorizedPickupAddSuccess: 'Authorized pickup person added',
     authorizedPickupUpdateSuccess: 'Authorized pickup person updated',
@@ -177,8 +187,6 @@ export const enUS = {
     errorEmailInvalid: 'Invalid email',
     errorPhoneInvalid: 'Invalid phone number',
 
-    createSuccess: 'Employee created successfully',
-    updateSuccess: 'Employee updated successfully',
     errorFallback: 'Failed to save employee',
   },
   schoolClasses: {
@@ -208,6 +216,13 @@ export const enUS = {
 
     formTitleNew: 'New class',
     formTitleEdit: 'Edit class',
+    tabData: 'Class data',
+    tabStudents: 'Students',
+    tabStudentsDisabled: 'Available after saving the class',
+    columnStudentName: 'Student',
+    columnSchedule: 'Schedule',
+    columnStudentStartDate: 'Start date',
+    studentsEmpty: 'No students enrolled in this class.',
 
     fieldName: 'Name',
     fieldNamePlaceholder: 'Class name',
@@ -229,7 +244,6 @@ export const enUS = {
     errorMaxCapacityRequired: 'Max capacity is required',
     errorTeacherRequired: 'Select a teacher',
 
-    updateSuccess: 'Class updated successfully',
     errorFallback: 'Failed to save class',
   },
   settings: {

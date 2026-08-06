@@ -18,6 +18,17 @@ export type Dictionary = {
   };
   readonly dashboard: {
     readonly title: string;
+    readonly metricActiveStudents: string;
+    readonly metricActiveEmployees: string;
+    readonly metricClasses: string;
+    readonly metricActiveEnrollments: string;
+    readonly occupancyTitle: string;
+    readonly occupancyEmpty: string;
+    readonly recentEnrollmentsTitle: string;
+    readonly recentEnrollmentsEmpty: string;
+    readonly columnStudent: string;
+    readonly columnClass: string;
+    readonly columnStartDate: string;
   };
   readonly navbar: {
     readonly logout: string;
@@ -39,6 +50,7 @@ export type Dictionary = {
     readonly statusInactive: string;
     readonly columnName: string;
     readonly columnGuardian: string;
+    readonly columnSchoolClass: string;
     readonly columnStatus: string;
     readonly columnActions: string;
     readonly editAction: string;
@@ -101,8 +113,6 @@ export type Dictionary = {
     readonly errorGuardianNameRequired: string;
     readonly errorRelationshipRequired: string;
 
-    readonly createSuccess: string;
-    readonly updateSuccess: string;
     readonly errorFallback: string;
     readonly authorizedPickupAddSuccess: string;
     readonly authorizedPickupUpdateSuccess: string;
@@ -183,8 +193,6 @@ export type Dictionary = {
     readonly errorEmailInvalid: string;
     readonly errorPhoneInvalid: string;
 
-    readonly createSuccess: string;
-    readonly updateSuccess: string;
     readonly errorFallback: string;
   };
   readonly schoolClasses: {
@@ -214,6 +222,13 @@ export type Dictionary = {
 
     readonly formTitleNew: string;
     readonly formTitleEdit: string;
+    readonly tabData: string;
+    readonly tabStudents: string;
+    readonly tabStudentsDisabled: string;
+    readonly columnStudentName: string;
+    readonly columnSchedule: string;
+    readonly columnStudentStartDate: string;
+    readonly studentsEmpty: string;
 
     readonly fieldName: string;
     readonly fieldNamePlaceholder: string;
@@ -235,7 +250,6 @@ export type Dictionary = {
     readonly errorMaxCapacityRequired: string;
     readonly errorTeacherRequired: string;
 
-    readonly updateSuccess: string;
     readonly errorFallback: string;
   };
   readonly settings: {

@@ -108,7 +108,7 @@ export default function EmployeeFormClient({ dict, employee }: EmployeeFormClien
             }
           }
 
-          showToast(dict.updateSuccess, 'success');
+          router.push('/employees');
         } else {
           const result = await createEmployee(payload);
           if (!result.ok) {
@@ -120,7 +120,7 @@ export default function EmployeeFormClient({ dict, employee }: EmployeeFormClien
             return;
           }
 
-          router.push('/employees');
+          router.push(`/employees/${result.data.id}/edit`);
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : dict.errorFallback;

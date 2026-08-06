@@ -6,7 +6,7 @@ import { listEmployees } from './actions';
 import EmployeesListClient from './view/EmployeesListClient';
 import type { StatusFilter } from './types';
 
-const DEFAULT_LIMIT = 50;
+const DEFAULT_LIMIT = 10;
 const ALLOWED_LIMITS = [10, 25, 50];
 
 interface EmployeesPageProps {

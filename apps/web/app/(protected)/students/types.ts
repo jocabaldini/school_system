@@ -27,6 +27,7 @@ export interface Student {
   guardianId: string;
   guardian?: Guardian;
   authorizedPickups?: AuthorizedPickup[];
+  enrollments?: Enrollment[];
   createdAt: string;
   updatedAt: string;
 }
