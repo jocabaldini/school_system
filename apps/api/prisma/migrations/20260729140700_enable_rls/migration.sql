@@ -6,7 +6,10 @@
 -- ROW LEVEL SECURITY is also set (it is not, here). So enabling RLS with zero
 -- policies fully blocks anon/authenticated access while leaving the backend
 -- untouched — no policies are needed or created.
-ALTER TABLE "_prisma_migrations" ENABLE ROW LEVEL SECURITY;
+--
+-- _prisma_migrations is intentionally excluded: it's Prisma's own internal
+-- bookkeeping table (no business data), and enabling RLS on it breaks
+-- `prisma migrate dev`'s local shadow-database replay (P3006/P1014).
 ALTER TABLE "User" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Responsavel" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "AutorizadoBusca" ENABLE ROW LEVEL SECURITY;
