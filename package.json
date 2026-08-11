@@ -48,7 +48,7 @@
   },
   "overrides": {
     "effect": "3.20.0",
-    "@babel/core": "7.29.7",
+    "@babel/core": "8.0.1",
     "next": {
       "postcss": "8.5.25",
       "sharp": "0.35.3"
